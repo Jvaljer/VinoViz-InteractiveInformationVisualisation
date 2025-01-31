@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    box-sizing: border-box;
+    padding: 16px;;
+    background-color: #2E2E2E;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    color: beige;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#content {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    height: 80%;
+    border: solid 2px beige;
+
+    & #viz {
+        width: 80%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    & #dashboard {
+        box-sizing: border-box;
+        padding: 8px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        width: 20%;
+        height: 100%;
+        border-left: solid 2px beige;
+        background-color: rgba(255,255,255, 0.1);
+
+        & .control-row {
+            box-sizing: border-box;
+            padding: 12px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+            width: 100%;
+            height: fit-content;
+            gap: 8px;
+            border-bottom: solid 1px beige;
+
+            & button {
+                background-color: rgba(255,255,255, 0.1);
+                border: solid 1px beige;
+                border-radius: 4px;
+                padding: 4px 8px;
+                color: beige;
+                align-self: flex-end;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgba(255,255,255, 0.2);
+                }
+
+                &:active {
+                    background-color: rgba(255,255,255, 0.3);
+                }
+            }
+
+            & #display-issue {
+                color: white;
+            }
+
+            & #circle-container {
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 16px;
+                align-items: center;
+                width: 100%;
+
+                & #r-min {
+                    background-color: black;
+                    opacity: 0.5;
+                    border-radius: 50%;
+                    width: 16px;
+                    height: 16px;
+                }
+
+                & #r-mid {
+                    background-color: black;
+                    opacity: 0.5;
+                    border-radius: 50%;
+                    width: 24px;
+                    height: 24px;
+                }
+    
+                & #r-max {
+                    background-color: black;
+                    opacity: 0.5;
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+
+            & .min-max-row {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            & #bar-container {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                height: 16px;
+            }
+        }
+    }
+
+}
+
+
+
+#footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    width: 100%;
+    height: 20%;
+    border: solid 2px beige;
+    border-top: none;
+    padding: 16px;
+    background-color: rgba(255,255,255, 0.1);
+
+    & .inner {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
+        width: 100%;
+
+        & .question {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    
+        & .credits {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: end;
+            width: 100%;
+            text-align: right;
+        }
+    }
+}
