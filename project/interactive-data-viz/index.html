@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VinoViz Project</title>
+    <script src="../p5.min.js"></script>
+    <script src="viz.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VinoViz Project</title>
-  <script src="../p5.min.js"></script>
-  <script src="viz.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <div id="content">
-    <div id="viz"></div>
-    <div id="dashboard">
+  <body>
+    <div id="content">
+      <div id="viz"></div>
+      <div id="dashboard">
         <!-- TODO: Add controls here -->
-         <div class="control-row">
-            <span>Displaying information for:<br><span id="display-issue">Alcohol Abuse</span></span>
-            <button onclick="switchIssue()">Switch</button>
-         </div>
-         <div class="control-row">
-            <span id="issue-title">Quantity</span>
-            <div class="min-max-row">
-                <span>Min: <span id="min">0</span></span>
-                <span>Max: <span id="max">0</span></span>
-            </div>
-            <div id="bar-container"></div>
-         </div>
-         <div class="control-row">
-          <span id="issue-title">Death by alcohol-related disease out of 100,000 total deaths</span>
+        <div class="control-row">
+          <span
+            >Displaying information for:<br /><span id="display-issue"
+              >Alcohol Dependence</span
+            ></span
+          >
+          <button onclick="switchIssue()">Switch</button>
+          <span class="issue-title">Number of people</span>
           <div class="min-max-row">
-              <span>Min: <span id="d-min">0.2</span></span>
-              <span>Max: <span id="d-max">29.6</span></span>
+            <span>Min: <span id="n-min">0</span></span>
+            <span>Max: <span id="n-max">0</span></span>
+          </div>
+          <div id="boxes-container">
+            <div id="b-min"></div>
+            <div id="b-mid"></div>
+            <div id="b-max"></div>
+          </div>
+          <span class="issue-title">How affected (in %)</span>
+          <div class="min-max-row">
+            <span>Min: <span id="p-min">0</span></span>
+            <span>Max: <span id="p-max">0</span></span>
+          </div>
+          <div id="bar-container"></div>
+        </div>
+        <div class="control-row">
+          <span class="issue-title"
+            >Death by alcohol-related disease out of 100,000 total deaths</span
+          >
+          <div class="min-max-row">
+            <span>Min: <span id="d-min">0</span></span>
+            <span>Max: <span id="d-max">0</span></span>
           </div>
           <div id="circle-container">
             <div id="r-min"></div>
@@ -39,18 +52,20 @@
             <div id="r-max"></div>
           </div>
         </div>
+      </div>
     </div>
-  </div>
 
-  <div id="footer">
-    <div class="inner">
-        <span class="question">"How does the evolution of drinking habit and alcohol-related issues among 20-50 years old in Korea impact their health outcomes ?"</span>
+    <div id="footer">
+      <div class="inner">
+        <span class="question"
+          >"How does the evolution of drinking habit and alcohol-related issues
+          among 20-50 years old in Korea impact their health outcomes ?"</span
+        >
         <div class="credits">
-            <span class="team">VINOVIZ Team</span>
-            <span class="team-members">Jihyun Park<br>Abel Henry-Lapassat</span>
+          <span class="team">VINOVIZ Team</span>
+          <span class="team-members">Jihyun Park<br />Abel Henry-Lapassat</span>
         </div>
+      </div>
     </div>
-</div>
-</body>
-
+  </body>
 </html>

@@ -88,28 +88,53 @@ body {
                 align-items: center;
                 width: 100%;
 
-                & #r-min {
+                & > * {
                     background-color: black;
                     opacity: 0.5;
                     border-radius: 50%;
+                }
+
+                & #r-min {
                     width: 16px;
                     height: 16px;
                 }
 
                 & #r-mid {
-                    background-color: black;
-                    opacity: 0.5;
-                    border-radius: 50%;
                     width: 24px;
                     height: 24px;
                 }
     
                 & #r-max {
-                    background-color: black;
-                    opacity: 0.5;
-                    border-radius: 50%;
                     width: 32px;
                     height: 32px;
+                }
+            }
+
+            & #boxes-container {
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 16px;
+                align-items: flex-end;
+                width: 100%;
+
+                & > * {
+                    background-color: black;
+                    opacity: 0.5;
+                    width: 24px;
+                }
+
+                & #b-min {
+                    height: 4px;
+                }
+
+                & #b-mid {
+                    height: 20px;
+                }
+    
+                & #b-max {
+                    height: 36px;
                 }
             }
 
@@ -168,4 +193,10 @@ body {
             text-align: right;
         }
     }
+}
+
+.issue-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-top: 16px;
 }

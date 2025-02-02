@@ -1,309 +1,278 @@
 let canvas;
 let alcoholAbuse = false;
-let gridAbuseHeights = [];
-let gridDependenceHeights = [];
-let gridDeathRates = [];
 let years = [];
 let ages = [];
 //font values
-let fontType = 'Arial';
+let fontType = "Arial";
 let fontHeight = 14;
-let fontColor = 'white';
+let fontColor = "white";
 let lineSpacing = 10;
 
-function preload() {
-    textFont = loadFont("./assets/Roboto-Regular.ttf");
-    sizes = {
-        width: document.getElementById('viz').clientWidth,
-        height: document.getElementById('viz').clientHeight
-    }
+let gridAbusesPercentage = new Map();
+let gridAbusesNumber = new Map();
+let gridDependenceNumber = new Map();
+let gridDependencePercentage = new Map();
+let gridDeathRates = new Map();
 
-    // TODO: Add data preload here
-    dependenceTable = loadTable("./data/Distribution-Of-Age-Of-Onset-Of-Alcohol-Dependence.csv", "csv", "header");
-    abuseTable = loadTable("./data/Distribution-Of-Age-Of-Onset-Of-Alcohol-Abuse.csv", "csv", "header");
-    deathRateTable = loadTable("./data/Alcohol-Related-Disease-Mortality-Rate-by-Age.csv", "csv", "header");
+let redScaleMin = [255, 240, 0];
+let redScaleMax = [255, 0, 0];
+
+let blueScaleMin = [0, 240, 255];
+let blueScaleMax = [0, 0, 176];
+
+function colorScale(min, max, value) {
+  let scale = [];
+  for (let i = 0; i < 3; i++) {
+    scale.push(min[i] + (max[i] - min[i]) * value);
+  }
+  return scale;
+}
+
+function preload() {
+  textFont = loadFont("./assets/Roboto-Regular.ttf");
+  sizes = {
+    width: document.getElementById("viz").clientWidth,
+    height: document.getElementById("viz").clientHeight,
+  };
+
+  // TODO: Add data preload here
+  dependenceTable = loadTable(
+    "./data/Distribution-Of-Age-Of-Onset-Of-Alcohol-Dependence.csv",
+    "csv",
+    "header"
+  );
+  abuseTable = loadTable(
+    "./data/Distribution-Of-Age-Of-Onset-Of-Alcohol-Abuse.csv",
+    "csv",
+    "header"
+  );
+  deathRateTable = loadTable(
+    "./data/Alcohol-Related-Disease-Mortality-Rate-by-Age.csv",
+    "csv",
+    "header"
+  );
 }
 
 function setup() {
-    // Getting all year values
-    let yearSet = new Set();
-    let ageSet = new Set();
-    let deathRateSet = new Set();
+  // Getting all year values
+  let yearSet = new Set();
+  let ageSet = new Set();
 
-    for (let i=0; i<abuseTable.getRowCount(); i++) {
-        let year = abuseTable.get(i, "year");
-        let age = abuseTable.get(i, "age");
-        yearSet.add(year);
-        ageSet.add(age);
+  for (let i = 0; i < abuseTable.getRowCount(); i++) {
+    if (abuseTable.get(i, "gender") !== "all") {
+      continue;
     }
-    for (let i=0; i<dependenceTable.getRowCount(); i++) {
-        let year = dependenceTable.get(i, "year");
-        let age = dependenceTable.get(i, "age");
-        yearSet.add(year);
-        ageSet.add(age);
-    } 
-    years = Array.from(yearSet);
-    ages = Array.from(ageSet);
-
-    gridAbuseHeights = new Array(ages.length*years.length);
-    gridAbuseColors = new Array(ages.length*years.length);
-    for (let i = 0; i < ages.length; i++) {
-        for (let j = 0; j < years.length; j++) {
-            gridAbuseHeights[i*years.length + j] = getAbuseNumber(years[j], ages[i]);
-            gridAbuseColors[i*years.length + j] = getAbusePercentage(years[j], ages[i]);
-        }
+    let year = parseInt(abuseTable.get(i, "year"));
+    let age = parseInt(abuseTable.get(i, "age"));
+    let number = parseInt(abuseTable.get(i, "number of people"));
+    let percentage = parseFloat(abuseTable.get(i, "percentage"));
+    yearSet.add(year);
+    ageSet.add(age);
+    gridAbusesNumber.set(year + "-" + age, number);
+    gridAbusesPercentage.set(year + "-" + age, percentage);
+  }
+  for (let i = 0; i < dependenceTable.getRowCount(); i++) {
+    if (dependenceTable.get(i, "gender") !== "all") {
+      continue;
     }
+    let year = parseInt(dependenceTable.get(i, "year"));
+    let age = parseInt(dependenceTable.get(i, "age"));
+    let number = parseInt(dependenceTable.get(i, "number of people"));
+    let percentage = parseFloat(dependenceTable.get(i, "percentage"));
+    yearSet.add(year);
+    ageSet.add(age);
+    gridDependenceNumber.set(year + "-" + age, number);
+    gridDependencePercentage.set(year + "-" + age, percentage);
+  }
+  for (let i = 0; i < deathRateTable.getRowCount(); i++) {
+    let year = parseInt(deathRateTable.get(i, "year"));
+    let age = parseInt(deathRateTable.get(i, "age"));
+    let rate = parseFloat(deathRateTable.get(i, "rate"));
+    yearSet.add(year);
+    ageSet.add(age);
+    gridDeathRates.set(year + "-" + age, rate);
+  }
+  years = Array.from(yearSet).sort();
+  ages = Array.from(ageSet).sort();
 
-    gridDependenceHeights = new Array(ages.length*years.length);
-    gridDependenceColors = new Array(ages.length*years.length);
-    for (let i = 0; i < ages.length; i++) {
-        for (let j = 0; j < years.length; j++) {
-            gridDependenceHeights[i*years.length + j] = getDependenceNumber(years[j], ages[i]);
-            gridDependenceColors[i*years.length + j] = getDependencePercentage(years[j], ages[i]);
-        }
-    }
+  canvas = createCanvas(sizes.width, sizes.height, WEBGL);
+  canvas.parent("viz");
 
-    gridDeathRates = new Array(ages.length*years.length);
-    for (let i = 0; i < ages.length; i++) {
-        for (let j = 0; j < years.length; j++) {
-            gridDeathRates[i*years.length + j] = getDeathRate(years[j], ages[i]);
-        }
-    }
-
-
-    canvas = createCanvas(sizes.width, sizes.height, WEBGL);
-    canvas.parent('viz');
-
-    angleMode(DEGREES);
+  angleMode(DEGREES);
 }
 
 function draw() {
-    background(46,46,46);
+  background(46, 46, 46);
 
-    orbitControl();
+  orbitControl();
 
-    push();
-    translate(0, 0, 0);
-    rotateX(60);
-    rotateZ(45);
+  push();
+  translate(0, 0, 0);
+  rotateX(60);
+  rotateZ(45);
 
-    noStroke();
-    plane(sizes.height/1.25); // white plane for grid base
-    drawGrid(sizes.height/1.5);
-    pop();
+  noStroke();
+  plane(sizes.height / 1.25); // white plane for grid base
+  drawGrid(sizes.height / 1.5);
+  pop();
 }
 
-function getAbuseNumber(year, age) 
-{
-    for (let i=0; i<abuseTable.getRowCount(); i++) {
-        let rowYear = abuseTable.get(i, "year");
-        let rowAge = abuseTable.get(i, "age");
-        let rowGender = abuseTable.get(i, "gender");
-
-        if (rowYear == year && rowAge == age && rowGender == "all") {
-            return abuseTable.get(i, "number of people");
-        }
+function iteratorMin(map) {
+  let min = Number.MAX_VALUE;
+  for (let value of map.values()) {
+    if (value < min) {
+      min = value;
     }
+  }
+  return min;
 }
 
-function getAbusePercentage(year, age)
-{
-    for (let i=0; i<abuseTable.getRowCount(); i++) {
-        let rowYear = abuseTable.get(i, "year");
-        let rowAge = abuseTable.get(i, "age");
-        let rowGender = abuseTable.get(i, "gender");
-
-        if (rowYear == year && rowAge == age && rowGender == "all") {
-            return abuseTable.get(i, "percentage");
-        }
+function iteratorMax(map) {
+  let max = Number.MIN_VALUE;
+  for (let value of map.values()) {
+    if (value > max) {
+      max = value;
     }
-}
-
-function getDependenceNumber(year, age)
-{
-    for (let i=0; i<dependenceTable.getRowCount(); i++) {
-        let rowYear = dependenceTable.get(i, "year");
-        let rowAge = dependenceTable.get(i, "age");
-        let rowGender = dependenceTable.get(i, "gender");
-
-        if (rowYear == year && rowAge == age && rowGender == "all") {
-            return dependenceTable.get(i, "number of people");
-        }
-    }
-}
-
-
-function getDependencePercentage(year, age)
-{
-    for (let i=0; i<dependenceTable.getRowCount(); i++) {
-        let rowYear = dependenceTable.get(i, "year");
-        let rowAge = dependenceTable.get(i, "age");
-        let rowGender = dependenceTable.get(i, "gender");
-
-        if (rowYear == year && rowAge == age && rowGender == "all") {
-            return dependenceTable.get(i, "percentage");
-        }
-    }
-}
-
-function getDeathRate(year, age) {
-    for (let i=0; i<deathRateTable.getRowCount(); i++) {
-        let rowYear = deathRateTable.get(i, "year");
-        let rowAge = deathRateTable.get(i, "age");
-
-        if (rowYear == year && rowAge == age) {
-            return deathRateTable.get(i, "percentage");
-        }
-    }
+  }
+  return max;
 }
 
 function drawGrid(size) {
-    let gridCount = 4; // 4x4 grid
-    let step = size/gridCount; // Calculate step size (grid cell size)
+  let nbYears = years.length;
+  let nbAges = ages.length;
+  let yearsStep = size / nbYears;
+  let agesStep = size / nbAges;
+  let maxHeight = 0.5 * size;
+  let minRadius = 0.05 * Math.min(yearsStep, agesStep);
+  let maxRadius = 0.25 * Math.min(yearsStep, agesStep);
 
-    stroke(0); // drawing lines in black
-    strokeWeight(2);
+  stroke(0); // drawing lines in black
+  strokeWeight(2);
 
-    // Horizontal lines
-    for (let i = 0; i <= gridCount; i++) {
-        line(-size/2, (i*step) - size/2, size/2, (i*step) - size/2);
+  // Year lines (horizontal)
+  for (let i = 0; i <= nbYears; i++) {
+    line(
+      -size / 2,
+      i * yearsStep - size / 2,
+      size / 2,
+      i * yearsStep - size / 2
+    );
+  }
+
+  // Age lines (vertical)
+  for (let i = 0; i <= nbAges; i++) {
+    line(i * agesStep - size / 2, -size / 2, i * agesStep - size / 2, size / 2);
+  }
+
+  stroke(0);
+  strokeWeight(1);
+
+  let numberMap = alcoholAbuse ? gridAbusesNumber : gridDependenceNumber;
+  let percentMap = alcoholAbuse
+    ? gridAbusesPercentage
+    : gridDependencePercentage;
+
+  let minNumber = iteratorMin(numberMap);
+  let maxNumber = iteratorMax(numberMap);
+  let minPercent = iteratorMin(percentMap);
+  let maxPercent = iteratorMax(percentMap);
+  let minDeathRate = iteratorMin(gridDeathRates);
+  let maxDeathRate = iteratorMax(gridDeathRates);
+
+  console.log("Drawing boxes");
+  for (let i = 0; i < nbYears; i++) {
+    for (let j = 0; j < nbAges; j++) {
+      let number = numberMap.get(years[i] + "-" + ages[j]);
+      let percentage = percentMap.get(years[i] + "-" + ages[j]);
+      let deathRate = gridDeathRates.get(years[i] + "-" + ages[j]);
+
+      let normalizedPercentage =
+        (percentage - minPercent) / (maxPercent - minPercent);
+      let color = alcoholAbuse
+        ? colorScale(redScaleMin, redScaleMax, normalizedPercentage)
+        : colorScale(blueScaleMin, blueScaleMax, normalizedPercentage);
+      fill(color[0], color[1], color[2]);
+
+      // here the idea is to draw one box in the center of each cell
+      // the box should be 1/2 the size of the cell
+      push();
+      let normalizedHeight = number / maxNumber;
+      translate(
+        (j - nbAges / 2 + 0.5) * agesStep,
+        (i - nbYears / 2 + 0.5) * yearsStep,
+        (normalizedHeight * maxHeight + 1) / 2
+      );
+      box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
+      console.log(ages[i], years[j], normalizedHeight * maxHeight + 1, number);
+
+      let normalizedRadius = deathRate / maxDeathRate;
+      let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
+
+      translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
+      if (deathRate != null) {
+        fill(0, 0, 0, 80);
+        noStroke();
+        sphere(radius);
+      } else {
+        // TODO (what to draw if no data)
+        // fill(200, 0, 0, 200);
+        // noStroke();
+        // sphere(maxRadius / 2);
+      }
+      pop();
     }
-
-    // Vertical lines
-    for (let i = 0; i <= gridCount; i++) {
-        line((i * step) - size / 2, -size / 2, (i * step) - size / 2, size / 2);
-    }
-
-    stroke(0);
-    strokeWeight(1);
-
-    let min = 0;
-    let max = 0;
-    for (let i = 0; i < gridCount; i++) {
-        for (let j = 0; j < gridCount; j++) {
-            let height; // gonna be reduced by 5
-            let t;
-            if (alcoholAbuse) {
-                height = gridAbuseHeights[i*gridCount + j]/5;
-                t = gridAbuseColors[i*gridCount + j]/50;
-            } else {
-                height = gridDependenceHeights[i*gridCount + j]/5;
-                t = gridDependenceColors[i*gridCount + j]/50;
-            }
-
-            // Normalize height (0 to 1)
-            
-
-            min = Math.min(min, t);
-            max = Math.max(max, t);
-
-            if (alcoholAbuse) {
-                if (t >= 0.75) {
-                    fill(150 + (t-0.75)/0.25 * (255 - 150), 0, 0);
-                } else {
-                    fill(255, 255 - t * 255, 0);
-                }
-            } else {
-                if (t >= 0.75) {
-                    fill(0, 0, 150 + (t - 0.75) * (255 - 150));
-                } else {
-                    fill(0, 255 - t * 255, 255);
-                }
-            }
-
-            // here the idea is to draw one box in the center of each cell
-            // the box should be 1/2 the size of the cell
-            push();
-            translate((i - 1.5)*step, (j - 1.5)*step, height*step/10); // height*step/2
-            box(step, step, height*step/5); // height*step
-
-            let radius = gridDeathRates[i*gridCount + j];
-
-            let minOld = 0.2, maxOld = 30;
-            let minNew = 5, maxNew = 25;
-
-            // Map the radius to the new range
-            let scaledRadius = minNew + ((radius - minOld) * (maxNew - minNew)) / (maxOld - minOld);
-
-            // Ensure it stays within bounds
-            scaledRadius = constrain(scaledRadius, minNew, maxNew);
-
-            translate(0, 0, (height * step / 10) + 25);
-
-            if (radius > 0) {
-                fill(0, 0, 0, 80);
-                noStroke();
-                sphere(scaledRadius);
-            } else {
-                fill(0, 0, 0, 1);
-                noStroke();
-                sphere(1); // Default small size for invalid values
-            }
-            pop();
-        }
-    }
-    displayMinMax(alcoholAbuse, min, max);
+  }
+  displayMinMaxNumber(minNumber, maxNumber);
+  displayMinMaxPercentage(minPercent, maxPercent);
+  displayMinMaxDeathRate(minDeathRate, maxDeathRate);
 }
-
 
 // continuous rotation on Z axis
 function rotateZWithFrameCount() {
-    rotateZ(frameCount/5);
+  rotateZ(frameCount / 5);
 }
 
 // resizing on window resize
 function windowResized() {
-    sizes = {
-        width: document.getElementById('viz').clientWidth,
-        height: document.getElementById('viz').clientHeight
-    }
-    resizeCanvas(sizes.width, sizes.height);
+  sizes = {
+    width: document.getElementById("viz").clientWidth,
+    height: document.getElementById("viz").clientHeight,
+  };
+  resizeCanvas(sizes.width, sizes.height);
 }
 
 function switchIssue() {
-    alcoholAbuse = !alcoholAbuse;
-    document.getElementById('display-issue').innerHTML = alcoholAbuse ? "Alcohol Abuse" : "Alcohol Dependence";
+  alcoholAbuse = !alcoholAbuse;
+  document.getElementById("display-issue").innerHTML = alcoholAbuse
+    ? "Alcohol Abuse"
+    : "Alcohol Dependence";
 }
 
-function displayMinMax(abuse,min,max) {
-    let minText = document.getElementById('min');
-    let maxText = document.getElementById('max');
-    if (max>1.0) {
-        max = 1.0;
-    }
-    minText.innerHTML = min*100 + "%";
-    maxText.innerHTML = max*100 + "%";
-
-    let barContainer = document.getElementById('bar-container');
-    let gradientStart = getValueColor(abuse,min);
-    let gradientEnd = getValueColor(abuse,max);
-    barContainer.style.background = `linear-gradient(to right, ${gradientStart}, ${gradientEnd})`;
+function displayMinMaxNumber(min, max) {
+  let minText = document.getElementById("n-min");
+  let maxText = document.getElementById("n-max");
+  minText.innerHTML = min;
+  maxText.innerHTML = max;
 }
 
+function displayMinMaxPercentage(min, max) {
+  let minText = document.getElementById("p-min");
+  let maxText = document.getElementById("p-max");
+  minText.innerHTML = min + "%";
+  maxText.innerHTML = max + "%";
 
-function getValueColor(abuse,v) {
-    let r, g, b;
-    if (abuse) {
-        if (v >= 0.75) {
-            r = 150 + (v-0.75)/0.25 * (255 - 150);
-            g = 0;
-            b = 0;
-        } else {
-            r = 255;
-            g = 255 - v * 255;
-            b = 0;
-        }
-    } else {
-        if (v >= 0.75) {
-            r = 0;
-            g = 0;
-            b = 150 + (v - 0.75) * (255 - 150);
-        } else {
-            r = 0;
-            g = 255 - v * 255;
-            b = 255;
-        }
-    }
+  let currentColorMin = alcoholAbuse ? redScaleMin : blueScaleMin;
+  let currentColorMax = alcoholAbuse ? redScaleMax : blueScaleMax;
 
-    return `rgb(${r}, ${g}, ${b})`;
+  let barContainer = document.getElementById("bar-container");
+  let gradientStart = `rgb(${currentColorMin[0]}, ${currentColorMin[1]}, ${currentColorMin[2]})`;
+  let gradientEnd = `rgb(${currentColorMax[0]}, ${currentColorMax[1]}, ${currentColorMax[2]})`;
+  barContainer.style.background = `linear-gradient(to right, ${gradientStart}, ${gradientEnd})`;
+}
+
+function displayMinMaxDeathRate(min, max) {
+  let minText = document.getElementById("d-min");
+  let maxText = document.getElementById("d-max");
+  minText.innerHTML = min;
+  maxText.innerHTML = max;
 }
