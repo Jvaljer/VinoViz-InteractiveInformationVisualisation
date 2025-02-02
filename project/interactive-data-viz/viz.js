@@ -46,16 +46,20 @@ function setup() {
     ages = Array.from(ageSet);
 
     gridAbuseHeights = new Array(ages.length*years.length);
+    gridAbuseColors = new Array(ages.length*years.length);
     for (let i = 0; i < ages.length; i++) {
         for (let j = 0; j < years.length; j++) {
-            gridAbuseHeights[i*years.length + j] = getAbusePercentage(years[j], ages[i]);
+            gridAbuseHeights[i*years.length + j] = getAbuseNumber(years[j], ages[i]);
+            gridAbuseColors[i*years.length + j] = getAbusePercentage(years[j], ages[i]);
         }
     }
 
     gridDependenceHeights = new Array(ages.length*years.length);
+    gridDependenceColors = new Array(ages.length*years.length);
     for (let i = 0; i < ages.length; i++) {
         for (let j = 0; j < years.length; j++) {
-            gridDependenceHeights[i*years.length + j] = getDependencePercentage(years[j], ages[i]);
+            gridDependenceHeights[i*years.length + j] = getDependenceNumber(years[j], ages[i]);
+            gridDependenceColors[i*years.length + j] = getDependencePercentage(years[j], ages[i]);
         }
     }
 
@@ -89,6 +93,19 @@ function draw() {
     pop();
 }
 
+function getAbuseNumber(year, age) 
+{
+    for (let i=0; i<abuseTable.getRowCount(); i++) {
+        let rowYear = abuseTable.get(i, "year");
+        let rowAge = abuseTable.get(i, "age");
+        let rowGender = abuseTable.get(i, "gender");
+
+        if (rowYear == year && rowAge == age && rowGender == "all") {
+            return abuseTable.get(i, "number of people");
+        }
+    }
+}
+
 function getAbusePercentage(year, age)
 {
     for (let i=0; i<abuseTable.getRowCount(); i++) {
@@ -101,6 +118,20 @@ function getAbusePercentage(year, age)
         }
     }
 }
+
+function getDependenceNumber(year, age)
+{
+    for (let i=0; i<dependenceTable.getRowCount(); i++) {
+        let rowYear = dependenceTable.get(i, "year");
+        let rowAge = dependenceTable.get(i, "age");
+        let rowGender = dependenceTable.get(i, "gender");
+
+        if (rowYear == year && rowAge == age && rowGender == "all") {
+            return dependenceTable.get(i, "number of people");
+        }
+    }
+}
+
 
 function getDependencePercentage(year, age)
 {
@@ -151,15 +182,17 @@ function drawGrid(size) {
     for (let i = 0; i < gridCount; i++) {
         for (let j = 0; j < gridCount; j++) {
             let height; // gonna be reduced by 5
+            let t;
             if (alcoholAbuse) {
                 height = gridAbuseHeights[i*gridCount + j]/5;
+                t = gridAbuseColors[i*gridCount + j]/50;
             } else {
                 height = gridDependenceHeights[i*gridCount + j]/5;
+                t = gridDependenceColors[i*gridCount + j]/50;
             }
 
             // Normalize height (0 to 1)
             
-            let t = height/10;
 
             min = Math.min(min, t);
             max = Math.max(max, t);
