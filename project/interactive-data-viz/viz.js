@@ -172,6 +172,12 @@ function drawGrid(size) {
     ? gridAbusesPercentage
     : gridDependencePercentage;
 
+    // intention of displaying both and not only one at a time
+  let abuseNumberMap = gridAbusesNumber;
+  let abusePercentMap = gridAbusesPercentage;
+  let dependencePercentMap = gridDependencePercentage;
+  let dependenceNumberMap = gridDependenceNumber;
+  
   let minNumber = iteratorMin(numberMap);
   let maxNumber = iteratorMax(numberMap);
   let minPercent = iteratorMin(percentMap);
@@ -179,8 +185,18 @@ function drawGrid(size) {
   let minDeathRate = iteratorMin(gridDeathRates);
   let maxDeathRate = iteratorMax(gridDeathRates);
 
-  console.log("Drawing boxes");
-  for (let i = 0; i < nbYears; i++) {
+    // same
+  let minAbuseNumber = iteratorMin(abuseNumberMap);
+  let maxAbuseNumber = iteratorMax(abuseNumberMap);
+  let minAbusePercent = iteratorMin(abusePercentMap);
+  let maxAbusePercent = iteratorMax(abusePercentMap);
+  let minDependenceNumber = iteratorMin(dependenceNumberMap);
+  let maxDependenceNumber = iteratorMax(dependenceNumberMap);
+  let minDependencePercent = iteratorMin(dependencePercentMap);
+  let maxDependencePercent = iteratorMax(dependencePercentMap);
+
+  // replacing this by a for loop that display BOTH abuse & dependence.
+  /*for (let i = 0; i < nbYears; i++) {
     for (let j = 0; j < nbAges; j++) {
       let number = numberMap.get(years[i] + "-" + ages[j]);
       let percentage = percentMap.get(years[i] + "-" + ages[j]);
@@ -191,8 +207,8 @@ function drawGrid(size) {
       let color = alcoholAbuse
         ? colorScale(redScaleMin, redScaleMax, normalizedPercentage)
         : colorScale(blueScaleMin, blueScaleMax, normalizedPercentage);
-      fill(color[0], color[1], color[2]);
 
+      fill(color[0], color[1], color[2]);
       // here the idea is to draw one box in the center of each cell
       // the box should be 1/2 the size of the cell
       push();
@@ -213,18 +229,69 @@ function drawGrid(size) {
         fill(0, 0, 0, 80);
         noStroke();
         sphere(radius);
-      } else {
-        // TODO (what to draw if no data)
-        // fill(200, 0, 0, 200);
-        // noStroke();
-        // sphere(maxRadius / 2);
       }
       pop();
+      
+
+    }
+  }*/
+
+  for (let i=0; i<nbYears; i++)
+  {
+    for (let j=0; j<nbAges; j++)
+    {
+        let abuseNumber = abuseNumberMap.get(years[i] + "-" + ages[j]);
+        let abusePercent = abusePercentMap.get(years[i] + "-" + ages[j]);
+        let dependenceNumber = dependenceNumberMap.get(years[i] + "-" + ages[j]);
+        let dependencePercent = dependencePercentMap.get(years[i] + "-" + ages[j]);
+        let deathRate = gridDeathRates.get(years[i] + "-" + ages[j]);
+
+        let abuseNormPercent = (abusePercent - minAbusePercent) / (maxAbusePercent - minAbusePercent);
+        let dependenceNormPercent = (dependencePercent - minDependencePercent) / (maxDependencePercent - minDependencePercent);
+
+        let abuseColor = colorScale(redScaleMin, redScaleMax, abuseNormPercent);
+        let dependenceColor = colorScale(blueScaleMin, blueScaleMax, dependenceNormPercent);
+
+        // Drawing Abuse on TOP
+        fill(abuseColor[0], abuseColor[1], abuseColor[2]);
+
+        push();
+        let normalizedAbuseHeight = abuseNumber / maxAbuseNumber;
+        translate(
+            (j - nbAges / 2 + 0.5) * agesStep+agesStep/6,
+            (i - nbYears / 2 + 0.5) * yearsStep,
+            (normalizedAbuseHeight * maxHeight + 1) / 2
+        );
+        box(agesStep/3, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
+        // console.log(ages[i], years[j], normalizedAbuseHeight * maxHeight + 1, abuseNumber);
+        pop();
+
+        // Drawing Dependence on BOTTOM
+        // Adapt to properly draw those the OTHER WAY around
+        fill(dependenceColor[0], dependenceColor[1], dependenceColor[2]);
+
+        push();
+        let normalizedDependenceHeight = dependenceNumber / maxDependenceNumber;
+        translate(
+            (j - nbAges / 2 + 0.5) * agesStep-(agesStep/6),
+            (i - nbYears / 2 + 0.5) * yearsStep,
+            (normalizedDependenceHeight * maxHeight + 1) / 2
+        );
+        box(agesStep/3, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
+        // console.log(ages[i], years[j], normalizedDependenceHeight * maxHeight + 1, dependenceNumber);
+
+        let normalizedRadius = deathRate / maxDeathRate;
+        let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
+
+        translate(0, 0, (normalizedAbuseHeight * maxHeight + 1) / 2 + maxRadius);
+        if (deathRate != null) {
+            fill(0, 0, 0, 80);
+            noStroke();
+            sphere(radius);
+        }
+        pop();
     }
   }
-  displayMinMaxNumber(minNumber, maxNumber);
-  displayMinMaxPercentage(minPercent, maxPercent);
-  displayMinMaxDeathRate(minDeathRate, maxDeathRate);
 }
 
 // continuous rotation on Z axis
