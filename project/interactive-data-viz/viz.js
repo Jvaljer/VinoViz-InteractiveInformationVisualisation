@@ -3,12 +3,12 @@ let alcoholAbuse = false;
 let showBoth = false;
 let years = [];
 let ages = [];
-//font values
-let fontType = "Arial";
-let fontHeight = 14;
-let fontColor = "white";
-let lineSpacing = 10;
-let arial;
+
+// font values
+let roboto;
+
+// mPicker IDs
+let PLANE = 100;
 
 let gridAbusesPercentage = new Map();
 let gridAbusesNumber = new Map();
@@ -31,7 +31,8 @@ function colorScale(min, max, value) {
 }
 
 function preload() {
-  arial = loadFont("./assets/Roboto-Regular.ttf");
+  roboto = loadFont("./assets/Roboto-Regular.ttf");
+  console.log("loaded: ", roboto);
 
   sizes = {
     width: document.getElementById("viz").clientWidth,
@@ -57,10 +58,6 @@ function preload() {
 }
 
 function setup() {
-  textFont(arial);
-  textSize(100);
-  textAlign(CENTER, CENTER);
-
   // Getting all year values
   let yearSet = new Set();
   let ageSet = new Set();
@@ -103,6 +100,10 @@ function setup() {
   ages = Array.from(ageSet).sort();
 
   canvas = createCanvas(sizes.width, sizes.height, WEBGL);
+  textFont(roboto);
+  textSize(25);
+  textAlign(CENTER, CENTER);
+  // canvas = mCreateCanvas(sizes.width, sizes.height, WEBGL);
   canvas.parent("viz");
 
   angleMode(DEGREES);
@@ -113,13 +114,36 @@ function draw() {
 
   orbitControl();
 
+  // push();
+  // translate (0,-300,0);
+  // fill(255,255,255);
+  // text('hello there',0,0);
+  // pop();
+
   push();
   translate(0, 0, 0);
   rotateX(60);
   rotateZ(45);
 
   noStroke();
+  // Trying hover and click features with mPicker.js on the plane
+    // yet not working ...
+  /*mPush();
+  mPlane(PLANE, sizes.height / 1.25);
+  mPop();*/
+
   plane(sizes.height / 1.25); // white plane for grid base
+  push();
+  translate(0,205,5);
+  fill(0);
+  text("20s        30s        40s        50s", 0, 0);
+  pop();
+  push();
+  translate(205, 0 ,5);
+  rotateZ(-90);
+  fill(0);
+  text("2001     2006     2011     2016", 0, 0);
+  pop();
   drawGrid(sizes.height / 1.5); // TODO: add labels display here
   pop();
 }
@@ -293,6 +317,17 @@ function drawGrid(size) {
     }
   }
 }
+
+  // mPicker mouse interactions (yet not working)
+  /*if (mouseIsPressed)
+  {
+    switch(objectAtMouse())
+    {
+      case PLANE:
+        console.log("Plane is clicked");
+        break;
+    }
+  }*/
 }
 
 // continuous rotation on Z axis
@@ -348,10 +383,4 @@ function displayMinMaxDeathRate(min, max) {
   let maxText = document.getElementById("d-max");
   minText.innerHTML = min;
   maxText.innerHTML = max;
-}
-
-function mouseClicked()
-{
-  // TODO: map out the click to any existing box ? 
-    // thus triggering interactions or not ...
 }
