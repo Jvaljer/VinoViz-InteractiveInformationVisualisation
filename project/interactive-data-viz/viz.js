@@ -179,7 +179,6 @@ function drawGrid(size) {
     ? gridAbusesPercentage
     : gridDependencePercentage;
 
-    // intention of displaying both and not only one at a time
   let abuseNumberMap = gridAbusesNumber;
   let abusePercentMap = gridAbusesPercentage;
   let dependencePercentMap = gridDependencePercentage;
@@ -192,7 +191,6 @@ function drawGrid(size) {
   let minDeathRate = iteratorMin(gridDeathRates);
   let maxDeathRate = iteratorMax(gridDeathRates);
 
-    // same
   let minAbuseNumber = iteratorMin(abuseNumberMap);
   let maxAbuseNumber = iteratorMax(abuseNumberMap);
   let minAbusePercent = iteratorMin(abusePercentMap);
@@ -218,8 +216,7 @@ function drawGrid(size) {
         : colorScale(blueScaleMin, blueScaleMax, normalizedPercentage);
 
       fill(color[0], color[1], color[2]);
-      // here the idea is to draw one box in the center of each cell
-      // the box should be 1/2 the size of the cell
+      
       push();
       let normalizedHeight = number / maxNumber;
       translate(
@@ -228,7 +225,6 @@ function drawGrid(size) {
         (normalizedHeight * maxHeight + 1) / 2
       );
       box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
-      // console.log(ages[i], years[j], normalizedHeight * maxHeight + 1, number);
 
       let normalizedRadius = deathRate / maxDeathRate;
       let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
@@ -261,7 +257,6 @@ function drawGrid(size) {
         let abuseColor = colorScale(redScaleMin, redScaleMax, abuseNormPercent);
         let dependenceColor = colorScale(blueScaleMin, blueScaleMax, dependenceNormPercent);
 
-        // Drawing Abuse on TOP
         fill(abuseColor[0], abuseColor[1], abuseColor[2]);
 
         push();
@@ -272,11 +267,8 @@ function drawGrid(size) {
             (normalizedAbuseHeight * maxHeight + 1) / 2
         );
         box(agesStep/2.5, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
-        // console.log(ages[i], years[j], normalizedAbuseHeight * maxHeight + 1, abuseNumber);
         pop();
 
-        // Drawing Dependence on BOTTOM
-        // Adapt to properly draw those the OTHER WAY around
         fill(dependenceColor[0], dependenceColor[1], dependenceColor[2]);
 
         push();
@@ -287,7 +279,6 @@ function drawGrid(size) {
             (normalizedDependenceHeight * maxHeight + 1) / 2
         );
         box(agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
-        // console.log(ages[i], years[j], normalizedDependenceHeight * maxHeight + 1, dependenceNumber);
 
         let normalizedRadius = deathRate / maxDeathRate;
         let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
@@ -357,4 +348,10 @@ function displayMinMaxDeathRate(min, max) {
   let maxText = document.getElementById("d-max");
   minText.innerHTML = min;
   maxText.innerHTML = max;
+}
+
+function mouseClicked()
+{
+  // TODO: map out the click to any existing box ? 
+    // thus triggering interactions or not ...
 }
