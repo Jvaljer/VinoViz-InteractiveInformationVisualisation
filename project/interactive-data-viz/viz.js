@@ -1,15 +1,16 @@
 let canvas;
+let planeSize;
 let alcoholAbuse = false;
 let showBoth = false;
 let years = [];
 let ages = [];
+let ageLabelPositions = [];
+let yearLabelPositions = [];
 
 // font values
 let roboto;
 
-// mPicker IDs
-let PLANE = 100;
-
+// data storage
 let gridAbusesPercentage = new Map();
 let gridAbusesNumber = new Map();
 let gridDependenceNumber = new Map();
@@ -32,7 +33,6 @@ function colorScale(min, max, value) {
 
 function preload() {
   roboto = loadFont("./assets/Roboto-Regular.ttf");
-  console.log("loaded: ", roboto);
 
   sizes = {
     width: document.getElementById("viz").clientWidth,
@@ -106,6 +106,8 @@ function setup() {
   // canvas = mCreateCanvas(sizes.width, sizes.height, WEBGL);
   canvas.parent("viz");
 
+  planeSize = sizes.height/1.25;
+
   angleMode(DEGREES);
 }
 
@@ -126,24 +128,15 @@ function draw() {
   rotateZ(45);
 
   noStroke();
-  // Trying hover and click features with mPicker.js on the plane
-    // yet not working ...
-  /*mPush();
-  mPlane(PLANE, sizes.height / 1.25);
-  mPop();*/
 
   plane(sizes.height / 1.25); // white plane for grid base
-  push();
-  translate(0,205,5);
-  fill(0);
-  text("20s        30s        40s        50s", 0, 0);
-  pop();
-  push();
-  translate(205, 0 ,5);
-  rotateZ(-90);
-  fill(0);
-  text("2001     2006     2011     2016", 0, 0);
-  pop();
+  for (let i=0; i<ages.length; i++)
+  {
+    push();
+    //insert texts here ...
+    pop();
+  }
+
   drawGrid(sizes.height / 1.5); // TODO: add labels display here
   pop();
 }
