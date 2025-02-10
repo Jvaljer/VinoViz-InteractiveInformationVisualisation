@@ -57,21 +57,29 @@ body {
             gap: 8px;
             border-bottom: solid 1px beige;
 
-            & button {
-                background-color: rgba(255,255,255, 0.1);
-                border: solid 1px beige;
-                border-radius: 4px;
-                padding: 4px 8px;
-                color: beige;
-                align-self: flex-end;
-                cursor: pointer;
+            & .buttons-row {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-between;
+                align-items: center;
 
-                &:hover {
-                    background-color: rgba(255,255,255, 0.2);
-                }
-
-                &:active {
-                    background-color: rgba(255,255,255, 0.3);
+                & button {
+                    background-color: rgba(255,255,255, 0.1);
+                    border: solid 1px beige;
+                    border-radius: 4px;
+                    padding: 4px 8px;
+                    color: beige;
+                    align-self: flex-end;
+                    cursor: pointer;
+    
+                    &:hover {
+                        background-color: rgba(255,255,255, 0.2);
+                    }
+    
+                    &:active {
+                        background-color: rgba(255,255,255, 0.3);
+                    }
                 }
             }
 
@@ -146,7 +154,7 @@ body {
                 width: 100%;
             }
 
-            & #bar-container {
+            & .bar {
                 display: flex;
                 flex-direction: row;
                 width: 100%;

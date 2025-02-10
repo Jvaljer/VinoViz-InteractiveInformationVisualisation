@@ -23,8 +23,10 @@
               >Alcohol Dependence</span
             ></span
           >
-          <button onclick="switchIssue()">Switch</button>
-          <button onclick="displayBoth()">Show Both</button>
+          <div class="buttons-row">
+            <button onclick="switchIssue()">Switch</button>
+            <button id="clickBoth" onclick="displayBoth()">Show Both</button>
+          </div>
           <span class="issue-title">Number of Cases</span>
           <div class="min-max-row">
             <span>Min: <span id="n-min">0</span></span>
@@ -36,11 +38,21 @@
             <div id="b-max"></div>
           </div>
           <span class="issue-title">Percentage of Each Age Group Among All Cases</span>
-          <div class="min-max-row">
+          <div class="showone min-max-row">
             <span>Min: <span id="p-min">0</span></span>
             <span>Max: <span id="p-max">0</span></span>
           </div>
-          <div id="bar-container"></div>
+          <div id="bar-container" class="showone bar"></div>
+          <div class="showboth min-max-row" style="display: none">
+            <span>Min: <span id="pa-min">0</span></span>
+            <span>Max: <span id="pa-max">0</span></span>
+          </div>
+          <div id="a-bar-container" class="showboth bar" style="display: none"></div>
+          <div class="showboth min-max-row" style="display: none">
+            <span>Min: <span id="pd-min">0</span></span>
+            <span>Max: <span id="pd-max">0</span></span>
+          </div>
+          <div id="d-bar-container" class="showboth bar" style="display: none"></div>
         </div>
 
         <div class="control-row">

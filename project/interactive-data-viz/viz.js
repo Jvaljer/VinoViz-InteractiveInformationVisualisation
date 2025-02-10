@@ -227,107 +227,115 @@ function drawGrid(size) {
   // replacing this by a for loop that display BOTH abuse & dependence.
   if (!showBoth)
   {
-  for (let i = 0; i < nbYears; i++) {
-    for (let j = 0; j < nbAges; j++) {
-      let number = numberMap.get(years[i] + "-" + ages[j]);
-      let percentage = percentMap.get(years[i] + "-" + ages[j]);
-      let deathRate = gridDeathRates.get(years[i] + "-" + ages[j]);
-
-      let normalizedPercentage =
-        (percentage - minPercent) / (maxPercent - minPercent);
-      let color = alcoholAbuse
-        ? colorScale(redScaleMin, redScaleMax, normalizedPercentage)
-        : colorScale(blueScaleMin, blueScaleMax, normalizedPercentage);
-
-      fill(color[0], color[1], color[2]);
-      
-      push();
-      let normalizedHeight = number / maxNumber;
-      translate(
-        (j - nbAges / 2 + 0.5) * agesStep,
-        (i - nbYears / 2 + 0.5) * yearsStep,
-        (normalizedHeight * maxHeight + 1) / 2
-      );
-      box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
-
-      let normalizedRadius = deathRate / maxDeathRate;
-      let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
-
-      translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
-      if (deathRate != null) {
-        fill(0, 0, 0, 80);
-        noStroke();
-        sphere(radius);
-      }
-      pop();
-    }
-  }
-  }
-  else 
-  {
-  for (let i=0; i<nbYears; i++)
-  {
-    for (let j=0; j<nbAges; j++)
-    {
-        let abuseNumber = abuseNumberMap.get(years[i] + "-" + ages[j]);
-        let abusePercent = abusePercentMap.get(years[i] + "-" + ages[j]);
-        let dependenceNumber = dependenceNumberMap.get(years[i] + "-" + ages[j]);
-        let dependencePercent = dependencePercentMap.get(years[i] + "-" + ages[j]);
+    for (let i = 0; i < nbYears; i++) {
+      for (let j = 0; j < nbAges; j++) {
+        let number = numberMap.get(years[i] + "-" + ages[j]);
+        let percentage = percentMap.get(years[i] + "-" + ages[j]);
         let deathRate = gridDeathRates.get(years[i] + "-" + ages[j]);
 
-        let abuseNormPercent = (abusePercent - minAbusePercent) / (maxAbusePercent - minAbusePercent);
-        let dependenceNormPercent = (dependencePercent - minDependencePercent) / (maxDependencePercent - minDependencePercent);
+        let normalizedPercentage =
+          (percentage - minPercent) / (maxPercent - minPercent);
+        let color = alcoholAbuse
+          ? colorScale(redScaleMin, redScaleMax, normalizedPercentage)
+          : colorScale(blueScaleMin, blueScaleMax, normalizedPercentage);
 
-        let abuseColor = colorScale(redScaleMin, redScaleMax, abuseNormPercent);
-        let dependenceColor = colorScale(blueScaleMin, blueScaleMax, dependenceNormPercent);
-
-        fill(abuseColor[0], abuseColor[1], abuseColor[2]);
-
+        fill(color[0], color[1], color[2]);
+        
         push();
-        let normalizedAbuseHeight = abuseNumber / maxAbuseNumber;
+        let normalizedHeight = number / maxNumber;
         translate(
-            (j - nbAges / 2 + 0.5) * agesStep+agesStep/5,
-            (i - nbYears / 2 + 0.5) * yearsStep,
-            (normalizedAbuseHeight * maxHeight + 1) / 2
+          (j - nbAges / 2 + 0.5) * agesStep,
+          (i - nbYears / 2 + 0.5) * yearsStep,
+          (normalizedHeight * maxHeight + 1) / 2
         );
-        box(agesStep/2.5, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
-        pop();
-
-        fill(dependenceColor[0], dependenceColor[1], dependenceColor[2]);
-
-        push();
-        let normalizedDependenceHeight = dependenceNumber / maxDependenceNumber;
-        translate(
-            (j - nbAges / 2 + 0.5) * agesStep-(agesStep/5),
-            (i - nbYears / 2 + 0.5) * yearsStep,
-            (normalizedDependenceHeight * maxHeight + 1) / 2
-        );
-        box(agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
+        box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
 
         let normalizedRadius = deathRate / maxDeathRate;
         let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
 
-        translate(0, 0, (normalizedAbuseHeight * maxHeight + 1) / 2 + maxRadius);
+        translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
         if (deathRate != null) {
-            fill(0, 0, 0, 80);
-            noStroke();
-            sphere(radius);
+          fill(0, 0, 0, 80);
+          noStroke();
+          sphere(radius);
         }
         pop();
+      }
     }
-  }
-}
 
-  // mPicker mouse interactions (yet not working)
-  /*if (mouseIsPressed)
+    displayMinMaxNumber(
+      alcoholAbuse ? minAbuseNumber : minDependenceNumber,
+      alcoholAbuse ? maxAbuseNumber : maxDependenceNumber
+    );
+
+    displayMinMaxPercentage(
+      alcoholAbuse ? minAbusePercent : minDependencePercent,
+      alcoholAbuse ? maxAbusePercent : maxDependencePercent
+    );
+
+    displayMinMaxDeathRate(minDeathRate, maxDeathRate);
+  }
+  else 
   {
-    switch(objectAtMouse())
+    for (let i=0; i<nbYears; i++)
     {
-      case PLANE:
-        console.log("Plane is clicked");
-        break;
-    }
-  }*/
+      for (let j=0; j<nbAges; j++)
+      {
+          let abuseNumber = abuseNumberMap.get(years[i] + "-" + ages[j]);
+          let abusePercent = abusePercentMap.get(years[i] + "-" + ages[j]);
+          let dependenceNumber = dependenceNumberMap.get(years[i] + "-" + ages[j]);
+          let dependencePercent = dependencePercentMap.get(years[i] + "-" + ages[j]);
+          let deathRate = gridDeathRates.get(years[i] + "-" + ages[j]);
+
+          let abuseNormPercent = (abusePercent - minAbusePercent) / (maxAbusePercent - minAbusePercent);
+          let dependenceNormPercent = (dependencePercent - minDependencePercent) / (maxDependencePercent - minDependencePercent);
+
+          let abuseColor = colorScale(redScaleMin, redScaleMax, abuseNormPercent);
+          let dependenceColor = colorScale(blueScaleMin, blueScaleMax, dependenceNormPercent);
+
+          fill(abuseColor[0], abuseColor[1], abuseColor[2]);
+
+          push();
+          let normalizedAbuseHeight = abuseNumber / maxAbuseNumber;
+          translate(
+              (j - nbAges / 2 + 0.5) * agesStep+agesStep/5,
+              (i - nbYears / 2 + 0.5) * yearsStep,
+              (normalizedAbuseHeight * maxHeight + 1) / 2
+          );
+          box(agesStep/2.5, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
+          pop();
+
+          fill(dependenceColor[0], dependenceColor[1], dependenceColor[2]);
+
+          push();
+          let normalizedDependenceHeight = dependenceNumber / maxDependenceNumber;
+          translate(
+              (j - nbAges / 2 + 0.5) * agesStep-(agesStep/5),
+              (i - nbYears / 2 + 0.5) * yearsStep,
+              (normalizedDependenceHeight * maxHeight + 1) / 2
+          );
+          box(agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
+
+          let normalizedRadius = deathRate / maxDeathRate;
+          let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
+
+          translate(0, 0, (normalizedAbuseHeight * maxHeight + 1) / 2 + maxRadius);
+          if (deathRate != null) {
+              fill(0, 0, 0, 80);
+              noStroke();
+              sphere(radius);
+          }
+          pop();
+        }
+      }
+      let allMin = Math.min(minAbuseNumber, minDependenceNumber);
+      let allMax = Math.max(maxAbuseNumber, maxDependenceNumber);
+
+      displayMinMaxNumber(allMin, allMax);
+      displayMinMaxDeathRate(minDeathRate, maxDeathRate);
+      displayAbuseGradient(minAbusePercent, maxAbusePercent);
+      displayDependenceGradient(minDependencePercent, maxDependencePercent);
+  }
 }
 
 // continuous rotation on Z axis
@@ -353,7 +361,20 @@ function switchIssue() {
 
 function displayBoth() {
   showBoth = !showBoth;
-  // TODO: handle legends changes
+  // if (showBoth)
+  // {
+  //   document.querySelectorAll(".showone").forEach(div => div.style.display='none');
+  //   document.querySelectorAll(".showboth").forEach(div => div.style.display='block');
+  // }
+  // else
+  // {
+  //   document.querySelectorAll(".showone").forEach(div => div.style.display='block');
+  //   document.querySelectorAll(".showboth").forEach(div => div.style.display='none');
+  // }
+  document.querySelectorAll(".showone").forEach(div => div.style.display= showBoth?'none':'block');
+  document.querySelectorAll(".showboth").forEach(div => div.style.display=showBoth?'block':'none');
+
+  document.getElementById('clickBoth').innerHTML = showBoth ? "Show One" : "Show Both";
 }
 
 function displayMinMaxNumber(min, max) {
@@ -361,6 +382,32 @@ function displayMinMaxNumber(min, max) {
   let maxText = document.getElementById("n-max");
   minText.innerHTML = min;
   maxText.innerHTML = max;
+}
+
+function displayAbuseGradient(min, max)
+{
+  let minText = document.getElementById("pa-min");
+  let maxText = document.getElementById("pa-max");
+  minText.innerHTML = min + "%";
+  maxText.innerHTML = max + "%";
+
+  let barContainer = document.getElementById("a-bar-container");
+  let gradientStart = `rgb(${redScaleMin[0]}, ${redScaleMin[1]}, ${redScaleMin[2]})`;
+  let gradientEnd = `rgb(${redScaleMax[0]}, ${redScaleMax[1]}, ${redScaleMax[2]})`;
+  barContainer.style.background = `linear-gradient(to right, ${gradientStart}, ${gradientEnd})`;
+}
+
+function displayDependenceGradient(min, max)
+{
+  let minText = document.getElementById("pd-min");
+  let maxText = document.getElementById("pd-max");
+  minText.innerHTML = min + "%";
+  maxText.innerHTML = max + "%";
+  
+  let barContainer = document.getElementById("d-bar-container");
+  let gradientStart = `rgb(${blueScaleMin[0]}, ${blueScaleMin[1]}, ${blueScaleMin[2]})`;
+  let gradientEnd = `rgb(${blueScaleMax[0]}, ${blueScaleMax[1]}, ${blueScaleMax[2]})`;
+  barContainer.style.background = `linear-gradient(to right, ${gradientStart}, ${gradientEnd})`;
 }
 
 function displayMinMaxPercentage(min, max) {
@@ -381,6 +428,6 @@ function displayMinMaxPercentage(min, max) {
 function displayMinMaxDeathRate(min, max) {
   let minText = document.getElementById("d-min");
   let maxText = document.getElementById("d-max");
-  minText.innerHTML = min;
-  maxText.innerHTML = max;
+  minText.innerHTML = min + "%";
+  maxText.innerHTML = max + "%";
 }
