@@ -14,6 +14,7 @@
       <div id="viz"></div>
       <div id="dashboard">
         <!-- TODO: Add controls here -->
+
         <div class="control-row">
           <span
             >Displaying information for:<br /><span id="display-issue"
@@ -21,6 +22,7 @@
             ></span
           >
           <button onclick="switchIssue()">Switch</button>
+          <button onclick="displayBoth()">Show Both</button>
           <span class="issue-title">Number of Cases</span>
           <div class="min-max-row">
             <span>Min: <span id="n-min">0</span></span>
@@ -38,6 +40,7 @@
           </div>
           <div id="bar-container"></div>
         </div>
+
         <div class="control-row">
           <span class="issue-title"
             >Death by alcohol-related disease out of 100,000 total deaths</span

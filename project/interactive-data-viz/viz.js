@@ -1,5 +1,6 @@
 let canvas;
 let alcoholAbuse = false;
+let showBoth = false;
 let years = [];
 let ages = [];
 //font values
@@ -7,6 +8,7 @@ let fontType = "Arial";
 let fontHeight = 14;
 let fontColor = "white";
 let lineSpacing = 10;
+let arial;
 
 let gridAbusesPercentage = new Map();
 let gridAbusesNumber = new Map();
@@ -29,7 +31,8 @@ function colorScale(min, max, value) {
 }
 
 function preload() {
-  textFont = loadFont("./assets/Roboto-Regular.ttf");
+  arial = loadFont("./assets/Roboto-Regular.ttf");
+
   sizes = {
     width: document.getElementById("viz").clientWidth,
     height: document.getElementById("viz").clientHeight,
@@ -54,6 +57,10 @@ function preload() {
 }
 
 function setup() {
+  textFont(arial);
+  textSize(100);
+  textAlign(CENTER, CENTER);
+
   // Getting all year values
   let yearSet = new Set();
   let ageSet = new Set();
@@ -113,7 +120,7 @@ function draw() {
 
   noStroke();
   plane(sizes.height / 1.25); // white plane for grid base
-  drawGrid(sizes.height / 1.5);
+  drawGrid(sizes.height / 1.5); // TODO: add labels display here
   pop();
 }
 
@@ -196,7 +203,9 @@ function drawGrid(size) {
   let maxDependencePercent = iteratorMax(dependencePercentMap);
 
   // replacing this by a for loop that display BOTH abuse & dependence.
-  /*for (let i = 0; i < nbYears; i++) {
+  if (!showBoth)
+  {
+  for (let i = 0; i < nbYears; i++) {
     for (let j = 0; j < nbAges; j++) {
       let number = numberMap.get(years[i] + "-" + ages[j]);
       let percentage = percentMap.get(years[i] + "-" + ages[j]);
@@ -219,7 +228,7 @@ function drawGrid(size) {
         (normalizedHeight * maxHeight + 1) / 2
       );
       box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
-      console.log(ages[i], years[j], normalizedHeight * maxHeight + 1, number);
+      // console.log(ages[i], years[j], normalizedHeight * maxHeight + 1, number);
 
       let normalizedRadius = deathRate / maxDeathRate;
       let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
@@ -231,11 +240,11 @@ function drawGrid(size) {
         sphere(radius);
       }
       pop();
-      
-
     }
-  }*/
-
+  }
+  }
+  else 
+  {
   for (let i=0; i<nbYears; i++)
   {
     for (let j=0; j<nbAges; j++)
@@ -258,11 +267,11 @@ function drawGrid(size) {
         push();
         let normalizedAbuseHeight = abuseNumber / maxAbuseNumber;
         translate(
-            (j - nbAges / 2 + 0.5) * agesStep+agesStep/6,
+            (j - nbAges / 2 + 0.5) * agesStep+agesStep/5,
             (i - nbYears / 2 + 0.5) * yearsStep,
             (normalizedAbuseHeight * maxHeight + 1) / 2
         );
-        box(agesStep/3, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
+        box(agesStep/2.5, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
         // console.log(ages[i], years[j], normalizedAbuseHeight * maxHeight + 1, abuseNumber);
         pop();
 
@@ -273,11 +282,11 @@ function drawGrid(size) {
         push();
         let normalizedDependenceHeight = dependenceNumber / maxDependenceNumber;
         translate(
-            (j - nbAges / 2 + 0.5) * agesStep-(agesStep/6),
+            (j - nbAges / 2 + 0.5) * agesStep-(agesStep/5),
             (i - nbYears / 2 + 0.5) * yearsStep,
             (normalizedDependenceHeight * maxHeight + 1) / 2
         );
-        box(agesStep/3, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
+        box(agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
         // console.log(ages[i], years[j], normalizedDependenceHeight * maxHeight + 1, dependenceNumber);
 
         let normalizedRadius = deathRate / maxDeathRate;
@@ -292,6 +301,7 @@ function drawGrid(size) {
         pop();
     }
   }
+}
 }
 
 // continuous rotation on Z axis
@@ -313,6 +323,11 @@ function switchIssue() {
   document.getElementById("display-issue").innerHTML = alcoholAbuse
     ? "Alcohol Abuse"
     : "Alcohol Dependence";
+}
+
+function displayBoth() {
+  showBoth = !showBoth;
+  // TODO: handle legends changes
 }
 
 function displayMinMaxNumber(min, max) {
