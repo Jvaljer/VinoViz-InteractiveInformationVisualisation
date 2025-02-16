@@ -134,6 +134,7 @@ function draw() {
 
   plane(planeSize); // white plane for grid base
 
+  translate(0, 0, 1);
   drawGrid(sizes.height / 1.5);
 
   let gridSize = sizes.height / 1.5;
@@ -142,7 +143,7 @@ function draw() {
   for (let i=0; i<ages.length; i++)
   {
     push();
-    translate(-gridSize/2 + cellSize/2, gridSize/2 + 15, 1); // initial age position
+    translate(-gridSize/2 + cellSize/2, gridSize/2 + 15, 0); // initial age position
     fill(0);
     translate(i*cellSize, 0, 0);
     text(`${ages[i]}`, 0, 0);
@@ -152,7 +153,7 @@ function draw() {
   for (let i=0; i<ages.length; i++)
   {
     push();
-    translate(gridSize/2 + 15, gridSize/2 - cellSize/2, 1) // "initial" year position
+    translate(gridSize/2 + 15, gridSize/2 - cellSize/2, 0) // "initial" year position
     fill(0);
     translate(0, -(i*cellSize), 0);
     rotateZ(-90);
