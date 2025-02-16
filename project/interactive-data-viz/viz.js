@@ -2,6 +2,7 @@ let canvas;
 let planeSize;
 let alcoholAbuse = false;
 let showBoth = false;
+
 let years = [];
 let ages = [];
 let ageLabelPositions = [];
@@ -38,6 +39,8 @@ function preload() {
     width: document.getElementById("viz").clientWidth,
     height: document.getElementById("viz").clientHeight,
   };
+
+  planeSize = sizes.height / 1.25;
 
   // TODO: Add data preload here
   dependenceTable = loadTable(
@@ -129,15 +132,34 @@ function draw() {
 
   noStroke();
 
-  plane(sizes.height / 1.25); // white plane for grid base
+  plane(planeSize); // white plane for grid base
+
+  drawGrid(sizes.height / 1.5);
+
+  let gridSize = sizes.height / 1.5;
+  let cellSize = gridSize / 4;
+
   for (let i=0; i<ages.length; i++)
   {
     push();
-    //insert texts here ...
+    translate(-gridSize/2 + cellSize/2, gridSize/2 + 15, 1); // initial age position
+    fill(0);
+    translate(i*cellSize, 0, 0);
+    text(`${ages[i]}`, 0, 0);
     pop();
   }
 
-  drawGrid(sizes.height / 1.5); // TODO: add labels display here
+  for (let i=0; i<ages.length; i++)
+  {
+    push();
+    translate(gridSize/2 + 15, gridSize/2 - cellSize/2, 1) // "initial" year position
+    fill(0);
+    translate(0, -(i*cellSize), 0);
+    rotateZ(-90);
+    text(`${years[(years.length-1) - i]}`, 0, 0);
+    pop();
+  }
+
   pop();
 }
 
@@ -164,7 +186,7 @@ function iteratorMax(map) {
 function drawGrid(size) {
   let nbYears = years.length;
   let nbAges = ages.length;
-  let yearsStep = size / nbYears;
+  let yearsStep = size / nbYears; // (sizes.height / 1.5) / 4
   let agesStep = size / nbAges;
   let maxHeight = 0.5 * size;
   let minRadius = 0.05 * Math.min(yearsStep, agesStep);
