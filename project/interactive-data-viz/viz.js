@@ -444,6 +444,6 @@ function displayMinMaxPercentage(min, max) {
 function displayMinMaxDeathRate(min, max) {
   let minText = document.getElementById("d-min");
   let maxText = document.getElementById("d-max");
-  minText.innerHTML = min + "%";
-  maxText.innerHTML = max + "%";
+  minText.innerHTML = min;
+  maxText.innerHTML = max;
 }
