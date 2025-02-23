@@ -58,10 +58,11 @@ var mPage;
  * Its parameters are identical to those for createCanvas().
  */
 function mCreateCanvas() {
-    createCanvas(...[...arguments]);
+    let can = createCanvas(...[...arguments]);
     pixelDensity(1);
     mPage = createGraphics(width, height, WEBGL);
 	mPage.pixelDensity(1);
+    return can;
 }
 
 /**
@@ -78,6 +79,9 @@ function getObjectID(mx, my) {
 		return 0;
 	}
     var gl = mPage.elt.getContext('webgl');
+    if (!gl) {
+        gl = mPage.elt.getContext('webgl2');
+    }
 	var pix = getPixels();
 	var index = 4 * ((gl.drawingBufferHeight-my) * gl.drawingBufferWidth + mx);
 
@@ -92,6 +96,9 @@ function getObjectID(mx, my) {
  */
 function getPixels() {
 	var gl = mPage.elt.getContext('webgl');
+    if (!gl) {
+        gl = mPage.elt.getContext('webgl2');
+    }
 	var pixels = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
 	gl.readPixels(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 	return (pixels);

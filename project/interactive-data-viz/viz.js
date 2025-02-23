@@ -102,11 +102,11 @@ function setup() {
   years = Array.from(yearSet).sort();
   ages = Array.from(ageSet).sort();
 
-  canvas = createCanvas(sizes.width, sizes.height, WEBGL);
+  // canvas = createCanvas(sizes.width, sizes.height, WEBGL);
+  canvas = mCreateCanvas(sizes.width, sizes.height, WEBGL);
   textFont(roboto);
   textSize(25);
   textAlign(CENTER, CENTER);
-  // canvas = mCreateCanvas(sizes.width, sizes.height, WEBGL);
   canvas.parent("viz");
 
   planeSize = sizes.height/1.25;
@@ -115,26 +115,28 @@ function setup() {
 }
 
 function draw() {
-  background(46, 46, 46);
+  mResetMatrix();
+
+  mBackground(46, 46, 46);
 
   orbitControl();
 
-  // push();
-  // translate (0,-300,0);
+  // mPush();
+  // mTranslate (0,-300,0);
   // fill(255,255,255);
   // text('hello there',0,0);
-  // pop();
+  // mPop();
 
-  push();
-  translate(0, 0, 0);
-  rotateX(60);
-  rotateZ(45);
+  mPush();
+  mTranslate(0, 0, 0);
+  mRotateX(60);
+  mRotateZ(45);
 
   noStroke();
 
-  plane(planeSize); // white plane for grid base
+  mPlane(1, planeSize); // white plane for grid base
 
-  translate(0, 0, 1);
+  mTranslate(0, 0, 1);
   drawGrid(sizes.height / 1.5);
 
   let gridSize = sizes.height / 1.5;
@@ -142,26 +144,26 @@ function draw() {
 
   for (let i=0; i<ages.length; i++)
   {
-    push();
-    translate(-gridSize/2 + cellSize/2, gridSize/2 + 15, 0); // initial age position
+    mPush();
+    mTranslate(-gridSize/2 + cellSize/2, gridSize/2 + 15, 0); // initial age position
     fill(0);
-    translate(i*cellSize, 0, 0);
+    mTranslate(i*cellSize, 0, 0);
     text(`${ages[i]}`, 0, 0);
-    pop();
+    mPop();
   }
 
   for (let i=0; i<ages.length; i++)
   {
-    push();
-    translate(gridSize/2 + 15, gridSize/2 - cellSize/2, 0) // "initial" year position
+    mPush();
+    mTranslate(gridSize/2 + 15, gridSize/2 - cellSize/2, 0) // "initial" year position
     fill(0);
-    translate(0, -(i*cellSize), 0);
-    rotateZ(-90);
+    mTranslate(0, -(i*cellSize), 0);
+    mRotateZ(-90);
     text(`${years[(years.length-1) - i]}`, 0, 0);
-    pop();
+    mPop();
   }
 
-  pop();
+  mPop();
 }
 
 function iteratorMin(map) {
@@ -257,25 +259,25 @@ function drawGrid(size) {
 
         fill(color[0], color[1], color[2]);
         
-        push();
+        mPush();
         let normalizedHeight = number / maxNumber;
-        translate(
+        mTranslate(
           (j - nbAges / 2 + 0.5) * agesStep,
           (i - nbYears / 2 + 0.5) * yearsStep,
           (normalizedHeight * maxHeight + 1) / 2
         );
-        box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
+        mBox(i*1000 + 100*j, agesStep, yearsStep, normalizedHeight * maxHeight + 1);
 
         let normalizedRadius = deathRate / maxDeathRate;
         let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
 
-        translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
+        mTranslate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
         if (deathRate != null) {
           fill(0, 0, 0, 80);
           noStroke();
-          sphere(radius);
+          mSphere(i*1000 + 100*j + 1, radius);
         }
-        pop();
+        mPop();
       }
     }
 
@@ -311,37 +313,37 @@ function drawGrid(size) {
 
           fill(abuseColor[0], abuseColor[1], abuseColor[2]);
 
-          push();
+          mPush();
           let normalizedAbuseHeight = abuseNumber / maxAbuseNumber;
-          translate(
+          mTranslate(
               (j - nbAges / 2 + 0.5) * agesStep+agesStep/5,
               (i - nbYears / 2 + 0.5) * yearsStep,
               (normalizedAbuseHeight * maxHeight + 1) / 2
           );
-          box(agesStep/2.5, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
-          pop();
+          mBox(i*1000 + 100*j + 2, agesStep/2.5, yearsStep*3/4, normalizedAbuseHeight * maxHeight + 1);
+          mPop();
 
           fill(dependenceColor[0], dependenceColor[1], dependenceColor[2]);
 
-          push();
+          mPush();
           let normalizedDependenceHeight = dependenceNumber / maxDependenceNumber;
-          translate(
+          mTranslate(
               (j - nbAges / 2 + 0.5) * agesStep-(agesStep/5),
               (i - nbYears / 2 + 0.5) * yearsStep,
               (normalizedDependenceHeight * maxHeight + 1) / 2
           );
-          box(agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
+          mBox(i*1000 + 100*j + 3, agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
 
           let normalizedRadius = deathRate / maxDeathRate;
           let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
 
-          translate(0, 0, (normalizedAbuseHeight * maxHeight + 1) / 2 + maxRadius);
+          mTranslate(0, 0, (normalizedAbuseHeight * maxHeight + 1) / 2 + maxRadius);
           if (deathRate != null) {
               fill(0, 0, 0, 80);
               noStroke();
-              sphere(radius);
+              mSphere(i*1000 + 100*j + 4, radius);
           }
-          pop();
+          mPop();
         }
       }
       let allMin = Math.min(minAbuseNumber, minDependenceNumber);
@@ -352,11 +354,12 @@ function drawGrid(size) {
       displayAbuseGradient(minAbusePercent, maxAbusePercent);
       displayDependenceGradient(minDependencePercent, maxDependencePercent);
   }
+  console.log(objectAtMouse());
 }
 
 // continuous rotation on Z axis
 function rotateZWithFrameCount() {
-  rotateZ(frameCount / 5);
+  mRotateZ(frameCount / 5);
 }
 
 // resizing on window resize
