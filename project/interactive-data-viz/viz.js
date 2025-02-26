@@ -373,6 +373,13 @@ function switchIssue() {
   document.getElementById("display-issue").innerHTML = alcoholAbuse
     ? "Alcohol Abuse"
     : "Alcohol Dependence";
+
+  document.getElementById("alcohol-abuse").style.display = alcoholAbuse
+    ? "block"
+    : "none";
+  document.getElementById("alcohol-dependence").style.display = alcoholAbuse
+    ? "none"
+    : "block";
 }
 
 function displayBoth() {
@@ -391,6 +398,13 @@ function displayBoth() {
   document.querySelectorAll(".showboth").forEach(div => div.style.display=showBoth?'block':'none');
 
   document.getElementById('clickBoth').innerHTML = showBoth ? "Show One" : "Show Both";
+
+  document.getElementById("alcohol-abuse").style.display = alcoholAbuse || showBoth
+  ? "block"
+  : "none";
+document.getElementById("alcohol-dependence").style.display = alcoholAbuse && !showBoth
+  ? "none"
+  : "block";
 }
 
 function displayMinMaxNumber(min, max) {
