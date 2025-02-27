@@ -18,6 +18,7 @@ let gridAbusesNumber = new Map();
 let gridDependenceNumber = new Map();
 let gridDependencePercentage = new Map();
 let gridDeathRates = new Map();
+let gridDrinkingRates = new Map();
 
 let redScaleMin = [255, 240, 0];
 let redScaleMax = [255, 0, 0];
@@ -56,6 +57,11 @@ function preload() {
   );
   deathRateTable = loadTable(
     "./data/Alcohol-Related-Disease-Mortality-Rate-by-Age.csv",
+    "csv",
+    "header"
+  );
+  drinkingRateTable = loadTable(
+    "./data/Lifetime-Drinking-Rate-Among-Adults-19plus.csv",
     "csv",
     "header"
   );
@@ -100,6 +106,13 @@ function setup() {
     ageSet.add(age);
     gridDeathRates.set(year + "-" + age, rate);
   }
+  for (let i = 0; i < drinkingRateTable.getRowCount(); i++)
+  {
+    let year = parseInt(drinkingRateTable.get(i, "year"));
+    let age = parseInt(drinkingRateTable.get(i, "age"));
+    let rate = parseFloat(drinkingRateTable.get(i, "rate"));
+    gridDrinkingRates.set(year + "-" + age, rate);
+  }
   years = Array.from(yearSet).sort();
   ages = Array.from(ageSet).sort();
 
@@ -119,12 +132,6 @@ function draw() {
   background(46, 46, 46);
 
   orbitControl();
-
-  // push();
-  // translate (0,-300,0);
-  // fill(255,255,255);
-  // text('hello there',0,0);
-  // pop();
 
   push();
   translate(0, 0, 0);
@@ -231,6 +238,8 @@ function drawGrid(size) {
   let maxPercent = iteratorMax(percentMap);
   let minDeathRate = iteratorMin(gridDeathRates);
   let maxDeathRate = iteratorMax(gridDeathRates);
+  let minDrinkingRate = iteratorMin(gridDrinkingRates);
+  let maxDrinkingRate = iteratorMax(gridDrinkingRates);
 
   let minAbuseNumber = iteratorMin(abuseNumberMap);
   let maxAbuseNumber = iteratorMax(abuseNumberMap);
@@ -266,6 +275,40 @@ function drawGrid(size) {
           (normalizedHeight * maxHeight + 1) / 2
         );
         box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
+
+        let drinkingRate = gridDrinkingRates.get(years[i]+"-"+ages[j]);
+        if (drinkingRate != null)
+        {
+          let normalizedDrinkingRate = (drinkingRate - minDrinkingRate) / (maxDrinkingRate - minDrinkingRate);
+          let filledCells = Math.round(normalizedDrinkingRate*100);
+
+          let cellSizeX = agesStep/12;
+          let cellSizeY = yearsStep/12;
+          translate(-cellSizeX/2, -cellSizeY/2, (normalizedHeight * maxHeight + 1) / 2 + 0.1);
+
+          let filledCount = 0;
+          for (let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
+              if (filledCount < filledCells) {
+                  let xOffset = (col - 4.5) * cellSizeX; // Centering grid
+                  let yOffset = (row - 4.5) * cellSizeY;
+                  
+                  fill(0, 0, 0, 127);
+                  stroke(0, 0, 0, 127);
+                  rect(xOffset, yOffset, cellSizeX, cellSizeY);
+                  
+                  filledCount++;
+              } else {
+                let xOffset = (col - 4.5) * cellSizeX; // Centering grid
+                let yOffset = (row - 4.5) * cellSizeY;
+                  
+                fill(255, 255, 255, 50);
+                stroke(0, 0, 0, 25);
+                rect(xOffset, yOffset, cellSizeX, cellSizeY);
+              }
+            }
+          }
+        }
 
         let normalizedRadius = deathRate / maxDeathRate;
         let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
@@ -332,6 +375,8 @@ function drawGrid(size) {
               (normalizedDependenceHeight * maxHeight + 1) / 2
           );
           box(agesStep/2.5, yearsStep*3/4, normalizedDependenceHeight * maxHeight + 1);
+
+          // INSERT HERE ?
 
           let normalizedRadius = deathRate / maxDeathRate;
           let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
