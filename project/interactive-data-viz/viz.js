@@ -443,6 +443,9 @@ function displayBoth() {
   document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse && !showBoth
   ? "none"
   : "block";
+
+  // Disable the switch button when showBoth is true
+  document.querySelector("button[onclick='switchIssue()']").disabled = showBoth;
 }
 
 function displayMinMaxNumber(min, max) {
