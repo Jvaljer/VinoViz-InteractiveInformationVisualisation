@@ -368,24 +368,24 @@ function windowResized() {
   resizeCanvas(sizes.width, sizes.height);
 }
 
-function loadCurrentIssue() {
+function updateDefinition() {
   document.getElementById("alcohol-abuse-question").style.display = alcoholAbuse
-    ? "block"
-    : "none";
+  ? "block"
+  : "none";
 
-  document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse
-    ? "block"
-    : "none";
+document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse
+  ? "block"
+  : "none";
 
-  document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse  
-    ? "none"
-    : "block";    
+document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse  
+  ? "none"
+  : "block";    
 
-  document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse  
-    ? "none"
-    : "block";    
-  
+document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse  
+  ? "none"
+  : "block";    
 }
+
 
 function switchIssue() {
   alcoholAbuse = !alcoholAbuse;
@@ -393,22 +393,7 @@ function switchIssue() {
     ? "Alcohol Abuse"
     : "Alcohol Dependence";
 
-    document.getElementById("alcohol-abuse-question").style.display = alcoholAbuse
-    ? "block"
-    : "none";
-
-  document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse
-    ? "block"
-    : "none";
-
-  document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse  
-    ? "none"
-    : "block";    
-
-  document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse  
-    ? "none"
-    : "block";    
-
+  updateDefinition();
 }
 
 function displayBoth() {
@@ -428,21 +413,7 @@ function displayBoth() {
 
   document.getElementById('clickBoth').innerHTML = showBoth ? "Show One" : "Show Both";
 
-  document.getElementById("alcohol-abuse-question").style.display = alcoholAbuse || showBoth
-  ? "block"
-  : "none";
-
-  document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse || showBoth
-  ? "block"
-  : "none";
-
-  document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse && !showBoth
-  ? "none"
-  : "block";
-
-  document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse && !showBoth
-  ? "none"
-  : "block";
+  updateDefinition();
 
   // Disable the switch button when showBoth is true
   document.querySelector("button[onclick='switchIssue()']").disabled = showBoth;
