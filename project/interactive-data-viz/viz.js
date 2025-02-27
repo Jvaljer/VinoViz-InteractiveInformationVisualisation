@@ -368,18 +368,47 @@ function windowResized() {
   resizeCanvas(sizes.width, sizes.height);
 }
 
+function loadCurrentIssue() {
+  document.getElementById("alcohol-abuse-question").style.display = alcoholAbuse
+    ? "block"
+    : "none";
+
+  document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse
+    ? "block"
+    : "none";
+
+  document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse  
+    ? "none"
+    : "block";    
+
+  document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse  
+    ? "none"
+    : "block";    
+  
+}
+
 function switchIssue() {
   alcoholAbuse = !alcoholAbuse;
   document.getElementById("display-issue").innerHTML = alcoholAbuse
     ? "Alcohol Abuse"
     : "Alcohol Dependence";
 
-  document.getElementById("alcohol-abuse").style.display = alcoholAbuse
+    document.getElementById("alcohol-abuse-question").style.display = alcoholAbuse
     ? "block"
     : "none";
-  document.getElementById("alcohol-dependence").style.display = alcoholAbuse
+
+  document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse
+    ? "block"
+    : "none";
+
+  document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse  
     ? "none"
-    : "block";
+    : "block";    
+
+  document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse  
+    ? "none"
+    : "block";    
+
 }
 
 function displayBoth() {
@@ -399,10 +428,19 @@ function displayBoth() {
 
   document.getElementById('clickBoth').innerHTML = showBoth ? "Show One" : "Show Both";
 
-  document.getElementById("alcohol-abuse").style.display = alcoholAbuse || showBoth
+  document.getElementById("alcohol-abuse-question").style.display = alcoholAbuse || showBoth
   ? "block"
   : "none";
-document.getElementById("alcohol-dependence").style.display = alcoholAbuse && !showBoth
+
+  document.getElementById("alcohol-abuse-answer").style.display = alcoholAbuse || showBoth
+  ? "block"
+  : "none";
+
+  document.getElementById("alcohol-dependence-question").style.display = alcoholAbuse && !showBoth
+  ? "none"
+  : "block";
+
+  document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse && !showBoth
   ? "none"
   : "block";
 }

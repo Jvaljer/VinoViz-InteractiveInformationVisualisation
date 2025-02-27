@@ -33,6 +33,21 @@ body {
         margin: 0;
         border-right: solid 2px beige;
         background-color: rgba(255,255,255, 0.1);
+        padding: 16px 16px;
+
+        & .question {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        & .answer {
+            font-size: 1rem;
+            margin-top: 16px;
+        }
+
+        & #alcohol-abuse-answer {
+            margin-bottom: 16px;
+        }
     }
 
     & #viz {
