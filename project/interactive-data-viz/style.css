@@ -7,7 +7,7 @@
 
 body {
     box-sizing: border-box;
-    padding: 16px;;
+    padding: 16px;
     background-color: #2E2E2E;
     width: 100vw;
     height: 100vh;
@@ -26,7 +26,26 @@ body {
     height: 80%;
     border: solid 2px beige;
 
+    & button {
+        background-color: rgba(255,255,255, 0.1);
+        border: solid 1px beige;
+        border-radius: 4px;
+        padding: 4px 8px;
+        color: beige;
+        align-self: flex-end;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(255,255,255, 0.2);
+        }
+
+        &:active {
+            background-color: rgba(255,255,255, 0.3);
+        }
+    }
+
     & #definition {
+        position: relative;
         width: 20%;
         height: 100%;
         padding: 0;
@@ -35,17 +54,14 @@ body {
         background-color: rgba(255,255,255, 0.1);
         padding: 16px 16px;
 
-        & .question {
+        & .title {
             font-size: 1.5rem;
             font-weight: bold;
         }
 
-        & .answer {
+        & .explanation {
             font-size: 1rem;
             margin-top: 16px;
-        }
-
-        & #alcohol-abuse-answer {
             margin-bottom: 16px;
         }
     }
@@ -87,24 +103,6 @@ body {
                 width: 100%;
                 justify-content: space-between;
                 align-items: center;
-
-                & button {
-                    background-color: rgba(255,255,255, 0.1);
-                    border: solid 1px beige;
-                    border-radius: 4px;
-                    padding: 4px 8px;
-                    color: beige;
-                    align-self: flex-end;
-                    cursor: pointer;
-    
-                    &:hover {
-                        background-color: rgba(255,255,255, 0.2);
-                    }
-    
-                    &:active {
-                        background-color: rgba(255,255,255, 0.3);
-                    }
-                }
             }
 
             & #display-issue {

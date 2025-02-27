@@ -1,5 +1,6 @@
 let canvas;
 let planeSize;
+let showStory = false;
 let alcoholAbuse = false;
 let showBoth = false;
 
@@ -384,6 +385,10 @@ document.getElementById("alcohol-dependence-question").style.display = alcoholAb
 document.getElementById("alcohol-dependence-answer").style.display = alcoholAbuse  
   ? "none"
   : "block";    
+}
+
+function switchExplanation() {
+  showStory = !showStory;
 }
 
 
