@@ -398,16 +398,7 @@ function switchIssue() {
 
 function displayBoth() {
   showBoth = !showBoth;
-  // if (showBoth)
-  // {
-  //   document.querySelectorAll(".showone").forEach(div => div.style.display='none');
-  //   document.querySelectorAll(".showboth").forEach(div => div.style.display='block');
-  // }
-  // else
-  // {
-  //   document.querySelectorAll(".showone").forEach(div => div.style.display='block');
-  //   document.querySelectorAll(".showboth").forEach(div => div.style.display='none');
-  // }
+
   document.querySelectorAll(".showone").forEach(div => div.style.display= showBoth?'none':'block');
   document.querySelectorAll(".showboth").forEach(div => div.style.display=showBoth?'block':'none');
 
@@ -429,8 +420,11 @@ document.getElementById("alcohol-dependence-answer").style.display = alcoholAbus
   ? "none"
   : "block";
 
-  // Disable the switch button when showBoth is true
-  document.querySelector("button[onclick='switchIssue()']").disabled = showBoth;
+  if (showBoth) {
+  document.querySelector("button[onclick='switchIssue()']").style.visibility = "hidden";
+  } else {
+  document.querySelector("button[onclick='switchIssue()']").style.visibility = "visible";
+  }
 }
 
 function displayMinMaxNumber(min, max) {
