@@ -293,7 +293,7 @@ function drawGrid(size) {
                   let yOffset = (row - 4.5) * cellSizeY;
                   
                   fill(0, 0, 0, 127);
-                  stroke(0, 0, 0, 127);
+                  noStroke();
                   rect(xOffset, yOffset, cellSizeX, cellSizeY);
                   
                   filledCount++;
@@ -301,8 +301,8 @@ function drawGrid(size) {
                 let xOffset = (col - 4.5) * cellSizeX; // Centering grid
                 let yOffset = (row - 4.5) * cellSizeY;
                   
-                fill(255, 255, 255, 50);
-                stroke(0, 0, 0, 25);
+                fill(255, 255, 255, 75);
+                noStroke();
                 rect(xOffset, yOffset, cellSizeX, cellSizeY);
               }
             }
