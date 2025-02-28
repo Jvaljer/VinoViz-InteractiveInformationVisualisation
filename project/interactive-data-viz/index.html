@@ -12,97 +12,105 @@
   </head>
 
   <body onload = "updateDefinition()">
-    <div id="content">
-      <div id="definition">
-        <p class="title" id="alcohol-abuse-question" style="display:none">What is alcohol abuse?</p>
-        <p class="explanation" id="alcohol-abuse-answer" style="display:none">
-          Alcohol abuse refers to a pattern of drinking that leads to negative consequences, 
-          such as failure to fulfill responsibilities, risky behaviors, legal issues, 
-          or problems in relationships. It does not necessarily involve physical dependence 
-          but can still have serious effects on a person’s health and well-being.
-        </p>
-        <p class="title" id="alcohol-dependence-question">What is alcohol dependence?</p>
-        <p class="explanation" id="alcohol-dependence-answer">
-          Alcohol dependence, also known as alcoholism, is a chronic condition where a person 
-          has a strong craving for alcohol, struggles to control their drinking, and 
-          experiences withdrawal symptoms when they stop. It often involves both physical and 
-          psychological addiction, making it difficult for the person to function without alcohol.
-        </p>
-      </div>
-      <div id="viz"></div>
-      <div id="dashboard">
-        <!-- TODO: Add controls here -->
-
-        <div class="control-row">
-          <span
-            >Displaying information for:<br /><span id="display-issue"
-              >Alcohol Dependence</span
-            ></span
-          >
-          <div class="buttons-row">
-            <button onclick="switchIssue()">Switch</button>
-            <button id="clickBoth" onclick="displayBoth()">Show Both</button>
-          </div>
-        </div>
-        <div class="control-row">
-          <span class="issue-title">Number of Cases</span>
-          <div class="min-max-row">
-            <span>Min: <span id="n-min">0</span></span>
-            <span>Max: <span id="n-max">0</span></span>
-          </div>
-          <div id="boxes-container">
-            <div id="b-min"></div>
-            <div id="b-mid"></div>
-            <div id="b-max"></div>
-          </div>
-        </div>
-        <div class="control-row">
-          <span class="issue-title">Percentage of Each Age Group Among All Cases</span>
-          <div class="showone min-max-row">
-            <span>Min: <span id="p-min">0</span></span>
-            <span>Max: <span id="p-max">0</span></span>
-          </div>
-          <div id="bar-container" class="showone bar"></div>
-          <div class="showboth min-max-row" style="display: none">
-            <span>Min: <span id="pa-min">0</span></span>
-            <span>Max: <span id="pa-max">0</span></span>
-          </div>
-          <div id="a-bar-container" class="showboth bar" style="display: none"></div>
-          <div class="showboth min-max-row" style="display: none">
-            <span>Min: <span id="pd-min">0</span></span>
-            <span>Max: <span id="pd-max">0</span></span>
-          </div>
-          <div id="d-bar-container" class="showboth bar" style="display: none"></div>
-        </div>
-
-        <div class="control-row">
-          <span class="issue-title"
-            >Death by alcohol-related disease out of 100,000 total deaths</span
-          >
-          <div class="min-max-row">
-            <span>Min: <span id="d-min">0</span></span>
-            <span>Max: <span id="d-max">0</span></span>
-          </div>
-          <div id="circle-container">
-            <div id="r-min"></div>
-            <div id="r-mid"></div>
-            <div id="r-max"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="footer">
+    <div id="header">
       <div class="inner">
-        <span class="question"
-          >"How does the evolution of drinking habit and alcohol-related issues
-          among 20-50 years old in Korea impact their health outcomes ?"</span
-        >
-        <div class="credits">
-          <span class="team">VINOVIZ Team</span>
-          <span class="team-members">Jihyun Park<br />Abel Henry-Lapassat</span>
+        <h1>VinoViz</h1>
+        <h2>Interactive Data Visualization</h2>
+      </div>
+    </div>
+    <div id="visualization">
+      <div id="content">
+        <div id="definition">
+          <p class="title" id="alcohol-abuse-question" style="display:none">What is alcohol abuse?</p>
+          <p class="explanation" id="alcohol-abuse-answer" style="display:none">
+            Alcohol abuse refers to a pattern of drinking that leads to negative consequences, 
+            such as failure to fulfill responsibilities, risky behaviors, legal issues, 
+            or problems in relationships. It does not necessarily involve physical dependence 
+            but can still have serious effects on a person’s health and well-being.
+          </p>
+          <p class="title" id="alcohol-dependence-question">What is alcohol dependence?</p>
+          <p class="explanation" id="alcohol-dependence-answer">
+            Alcohol dependence, also known as alcoholism, is a chronic condition where a person 
+            has a strong craving for alcohol, struggles to control their drinking, and 
+            experiences withdrawal symptoms when they stop. It often involves both physical and 
+            psychological addiction, making it difficult for the person to function without alcohol.
+          </p>
+        </div>
+        <div id="viz"></div>
+        <div id="dashboard">
+          <!-- TODO: Add controls here -->
+
+          <div class="control-row">
+            <span
+              >Displaying information for:<br /><span id="display-issue"
+                >Alcohol Dependence</span
+              ></span
+            >
+            <div class="buttons-row">
+              <button onclick="switchIssue()">Switch</button>
+              <button id="clickBoth" onclick="displayBoth()">Show Both</button>
+            </div>
+          </div>
+          <div class="control-row">
+            <span class="issue-title">Number of Cases</span>
+            <div class="min-max-row">
+              <span>Min: <span id="n-min">0</span></span>
+              <span>Max: <span id="n-max">0</span></span>
+            </div>
+            <div id="boxes-container">
+              <div id="b-min"></div>
+              <div id="b-mid"></div>
+              <div id="b-max"></div>
+            </div>
+          </div>
+          <div class="control-row">
+            <span class="issue-title">Percentage of Each Age Group Among All Cases</span>
+            <div class="showone min-max-row">
+              <span>Min: <span id="p-min">0</span></span>
+              <span>Max: <span id="p-max">0</span></span>
+            </div>
+            <div id="bar-container" class="showone bar"></div>
+            <div class="showboth min-max-row" style="display: none">
+              <span>Min: <span id="pa-min">0</span></span>
+              <span>Max: <span id="pa-max">0</span></span>
+            </div>
+            <div id="a-bar-container" class="showboth bar" style="display: none"></div>
+            <div class="showboth min-max-row" style="display: none">
+              <span>Min: <span id="pd-min">0</span></span>
+              <span>Max: <span id="pd-max">0</span></span>
+            </div>
+            <div id="d-bar-container" class="showboth bar" style="display: none"></div>
+          </div>
+
+          <div class="control-row">
+            <span class="issue-title"
+              >Death by alcohol-related disease out of 100,000 total deaths</span
+            >
+            <div class="min-max-row">
+              <span>Min: <span id="d-min">0</span></span>
+              <span>Max: <span id="d-max">0</span></span>
+            </div>
+            <div id="circle-container">
+              <div id="r-min"></div>
+              <div id="r-mid"></div>
+              <div id="r-max"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="footer">
+        <div class="inner">
+          <span class="question"
+            >"How does the evolution of drinking habit and alcohol-related issues
+            among 20-50 years old in Korea impact their health outcomes ?"</span
+          >
+          <div class="credits">
+            <span class="team">VINOVIZ Team</span>
+            <span class="team-members">Jihyun Park<br />Abel Henry-Lapassat</span>
+          </div>
         </div>
       </div>
     </div>
+
   </body>
 </html>

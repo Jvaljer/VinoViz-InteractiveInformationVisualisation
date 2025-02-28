@@ -3,16 +3,20 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
+    color: beige;
 }
 
 body {
     box-sizing: border-box;
     padding: 16px;
     background-color: #2E2E2E;
-    width: 100vw;
-    height: 100vh;
+}
+
+#visualization {
+    width: 100%;
+    margin-top: 16px;
+    height: calc(100vh - 32px);
     overflow: hidden;
-    color: beige;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -53,6 +57,7 @@ body {
         border-right: solid 2px beige;
         background-color: rgba(255,255,255, 0.1);
         padding: 16px 16px;
+        overflow-y: auto;
 
         & .title {
             font-size: 1.5rem;
@@ -84,6 +89,7 @@ body {
         height: 100%;
         border-left: solid 2px beige;
         background-color: rgba(255,255,255, 0.1);
+        overflow-y: auto;
 
         & .control-row {
             box-sizing: border-box;
