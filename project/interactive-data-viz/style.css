@@ -76,7 +76,7 @@ body {
         }
     }
 
-    & #definition {
+    & #definition-section {
         position: relative;
         width: 20%;
         height: 100%;
@@ -86,6 +86,16 @@ body {
         background-color: rgba(255,255,255, 0.1);
         padding: 16px 16px;
         overflow-y: auto;
+        align-items: center;
+
+        & #sources {
+            position: absolute;
+            bottom:16px;
+
+            & ul {
+                list-style-position: inside;
+            }
+        }
     }
 
     & #viz {
