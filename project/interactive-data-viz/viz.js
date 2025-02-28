@@ -424,7 +424,7 @@ function drawSquare(drinkingRate, minDrinkingRate, maxDrinkingRate, agesStep, ye
 
 function toggleSquares() {
   showSquares = !showSquares;
-  document.getElementById('squares').innerHTML = showSpheres ? "Hide" : "Show";
+  document.getElementById('squares').innerHTML = showSquares ? "Hide" : "Show";
 }
 
 // continuous rotation on Z axis
