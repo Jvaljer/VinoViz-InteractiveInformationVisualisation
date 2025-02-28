@@ -471,6 +471,14 @@ function switchIssue() {
 function displayBoth() {
   showBoth = !showBoth;
 
+  if(showBoth) {
+    document.getElementById("display-issue").innerHTML = "Both";
+  } else {
+    document.getElementById("display-issue").innerHTML = alcoholAbuse
+    ? "Alcohol Abuse"
+    : "Alcohol Dependence";
+  }
+
   document.querySelectorAll(".showone").forEach(div => div.style.display= showBoth?'none':'block');
   document.querySelectorAll(".showboth").forEach(div => div.style.display=showBoth?'block':'none');
 
