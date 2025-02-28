@@ -2,6 +2,7 @@ let canvas;
 let planeSize;
 let alcoholAbuse = false;
 let showBoth = false;
+let showSpheres = true;
 
 let years = [];
 let ages = [];
@@ -309,19 +310,10 @@ function drawGrid(size) {
           }
         }
 
-        let normalizedRadius = deathRate / maxDeathRate;
-        let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
-
-        if (drinkingRate == null)
-          translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
-        else 
-          translate(0, 0, (normalizedHeight + 1) / 2 + maxRadius);
-
-        if (deathRate != null) {
-          fill(0, 0, 0, 80);
-          noStroke();
-          sphere(radius);
+        if(showSpheres) {
+          drawSphere(deathRate, drinkingRate, maxDeathRate, minRadius, maxRadius, normalizedHeight, maxHeight);
         }
+
         pop();
       }
     }
@@ -401,6 +393,27 @@ function drawGrid(size) {
       displayAbuseGradient(minAbusePercent, maxAbusePercent);
       displayDependenceGradient(minDependencePercent, maxDependencePercent);
   }
+}
+
+function drawSphere(deathRate, drinkingRate, maxDeathRate, minRadius, maxRadius, normalizedHeight, maxHeight) {
+  let normalizedRadius = deathRate / maxDeathRate;
+  let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
+
+  if (drinkingRate == null)
+      translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
+  else
+      translate(0, 0, (normalizedHeight + 1) / 2 + maxRadius);
+
+  if (deathRate != null) {
+      fill(0, 0, 0, 80);
+      noStroke();
+      sphere(radius);
+  }
+}
+
+function toggleSpheres() {
+  showSpheres = !showSpheres;
+  document.getElementById('spheres').innerHTML = showSpheres ? "Hide" : "Show";
 }
 
 // continuous rotation on Z axis
