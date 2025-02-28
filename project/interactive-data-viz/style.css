@@ -38,6 +38,12 @@ body {
     border: 2px solid beige;
     background-color: rgba(255,255,255, 0.1);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1s);
+    transition: all 0.25s ease;
+
+    &:hover {
+        background-color: rgba(255,255,255, 0.15);
+        transform: scale(1.05);
+    }
 }
 
 #visualization {
@@ -87,13 +93,26 @@ body {
         padding: 16px 16px;
         overflow-y: auto;
         align-items: center;
+        transition: all 0.25s ease;
+
+        &:hover {
+            background-color: rgba(255,255,255, 0.2);
+        }
 
         & #sources {
             position: absolute;
             bottom:16px;
 
+            & h3 {
+                padding-bottom: 8px;
+            }
+
             & ul {
                 list-style-position: inside;
+
+                & li {
+                    padding-bottom: 8px;
+                }
             }
         }
     }
@@ -117,6 +136,11 @@ body {
         border-left: solid 2px beige;
         background-color: rgba(255,255,255, 0.1);
         overflow-y: auto;
+        transition: all 0.25s ease;
+
+        &:hover {
+            background-color: rgba(255,255,255, 0.2);
+        }
 
         & .control-row {
             box-sizing: border-box;
@@ -233,6 +257,11 @@ body {
     border-top: none;
     padding: 16px;
     background-color: rgba(255,255,255, 0.1);
+    transition: all 0.25s ease;
+
+    &:hover {
+        background-color: rgba(255,255,255, 0.2);
+    }
 
     & .inner {
         height: 100%;
