@@ -312,7 +312,11 @@ function drawGrid(size) {
         let normalizedRadius = deathRate / maxDeathRate;
         let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
 
-        translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
+        if (drinkingRate == null)
+          translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
+        else 
+          translate(0, 0, (normalizedHeight + 1) / 2 + maxRadius);
+
         if (deathRate != null) {
           fill(0, 0, 0, 80);
           noStroke();
