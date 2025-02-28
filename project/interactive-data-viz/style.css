@@ -225,6 +225,47 @@ body {
                 }
             }
 
+            & #squares-container {
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 16px;
+                align-items: flex-end;
+                width: 100%;
+
+                & > * {
+                    background-color: black;
+                    opacity: 0.5;
+                    width: 30px;
+                }
+
+                & #sq-min {
+                    height: 30px;
+                    background-color: white;
+                }
+
+                #sq-mid {
+                    position: relative;
+                    height: 30px;
+                    background-color: white;
+                }
+                
+                #sq-mid::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 50%;
+                    background-color: black;
+                }
+    
+                & #sq-max {
+                    height: 30px;
+                }
+            }
+
             & .min-max-row {
                 display: flex;
                 flex-direction: row;

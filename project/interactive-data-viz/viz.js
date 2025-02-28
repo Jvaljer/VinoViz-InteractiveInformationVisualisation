@@ -329,6 +329,8 @@ function drawGrid(size) {
     );
 
     displayMinMaxDeathRate(minDeathRate, maxDeathRate);
+
+    displayMinMaxDrinkingRate(minDrinkingRate, maxDrinkingRate);
   }
   else 
   {
@@ -539,6 +541,13 @@ function displayMinMaxPercentage(min, max) {
 function displayMinMaxDeathRate(min, max) {
   let minText = document.getElementById("d-min");
   let maxText = document.getElementById("d-max");
+  minText.innerHTML = min;
+  maxText.innerHTML = max;
+}
+
+function displayMinMaxDrinkingRate(min, max) {
+  let minText = document.getElementById("dr-min");
+  let maxText = document.getElementById("dr-max");
   minText.innerHTML = min;
   maxText.innerHTML = max;
 }
