@@ -10,6 +10,34 @@ body {
     box-sizing: border-box;
     padding: 16px;
     background-color: #2E2E2E;
+
+    & .title {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    & .explanation {
+        font-size: 1rem;
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+}
+
+#info-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.info-box {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    border: 2px solid beige;
+    background-color: rgba(255,255,255, 0.1);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1s);
 }
 
 #visualization {
@@ -58,17 +86,6 @@ body {
         background-color: rgba(255,255,255, 0.1);
         padding: 16px 16px;
         overflow-y: auto;
-
-        & .title {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        & .explanation {
-            font-size: 1rem;
-            margin-top: 16px;
-            margin-bottom: 16px;
-        }
     }
 
     & #viz {
