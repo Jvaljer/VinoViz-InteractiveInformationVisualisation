@@ -3,6 +3,7 @@ let planeSize;
 let alcoholAbuse = false;
 let showBoth = false;
 let showSpheres = true;
+let showSquares = true;
 
 let years = [];
 let ages = [];
@@ -277,37 +278,8 @@ function drawGrid(size) {
         box(agesStep, yearsStep, normalizedHeight * maxHeight + 1);
 
         let drinkingRate = gridDrinkingRates.get(years[i]+"-"+ages[j]);
-        if (drinkingRate != null)
-        {
-          let normalizedDrinkingRate = (drinkingRate - minDrinkingRate) / (maxDrinkingRate - minDrinkingRate);
-          let filledCells = Math.round(normalizedDrinkingRate*100);
-
-          let cellSizeX = agesStep/12;
-          let cellSizeY = yearsStep/12;
-          translate(-cellSizeX/2, -cellSizeY/2, (normalizedHeight * maxHeight + 1) / 2 + 0.1);
-
-          let filledCount = 0;
-          for (let row = 0; row < 10; row++) {
-            for (let col = 0; col < 10; col++) {
-              if (filledCount < filledCells) {
-                  let xOffset = (col - 4.5) * cellSizeX; // Centering grid
-                  let yOffset = (row - 4.5) * cellSizeY;
-                  
-                  fill(0, 0, 0, 127);
-                  noStroke();
-                  rect(xOffset, yOffset, cellSizeX, cellSizeY);
-                  
-                  filledCount++;
-              } else {
-                let xOffset = (col - 4.5) * cellSizeX; // Centering grid
-                let yOffset = (row - 4.5) * cellSizeY;
-                  
-                fill(255, 255, 255, 75);
-                noStroke();
-                rect(xOffset, yOffset, cellSizeX, cellSizeY);
-              }
-            }
-          }
+        if(showSquares) {
+          drawSquare(drinkingRate, minDrinkingRate, maxDrinkingRate, agesStep, yearsStep, normalizedHeight, maxHeight);
         }
 
         if(showSpheres) {
@@ -416,6 +388,43 @@ function drawSphere(deathRate, drinkingRate, maxDeathRate, minRadius, maxRadius,
 function toggleSpheres() {
   showSpheres = !showSpheres;
   document.getElementById('spheres').innerHTML = showSpheres ? "Hide" : "Show";
+}
+
+function drawSquare(drinkingRate, minDrinkingRate, maxDrinkingRate, agesStep, yearsStep, normalizedHeight, maxHeight) {
+  if (drinkingRate != null) {
+    let normalizedDrinkingRate = (drinkingRate - minDrinkingRate) / (maxDrinkingRate - minDrinkingRate);
+    let filledCells = Math.round(normalizedDrinkingRate * 100);
+
+    let cellSizeX = agesStep / 12;
+    let cellSizeY = yearsStep / 12;
+
+    translate(-cellSizeX / 2, -cellSizeY / 2, (normalizedHeight * maxHeight + 1) / 2 + 0.1);
+
+    let filledCount = 0;
+
+    for (let row = 0; row < 10; row++) {
+      for (let col = 0; col < 10; col++) {
+        let xOffset = (col - 4.5) * cellSizeX; 
+        let yOffset = (row - 4.5) * cellSizeY;
+
+        if (filledCount < filledCells) {
+          fill(0, 0, 0, 127); 
+          noStroke();
+          rect(xOffset, yOffset, cellSizeX, cellSizeY);
+          filledCount++;
+        } else {
+          fill(255, 255, 255, 75); 
+          noStroke();
+          rect(xOffset, yOffset, cellSizeX, cellSizeY);
+        }
+      }
+    }
+  }
+}
+
+function toggleSquares() {
+  showSquares = !showSquares;
+  document.getElementById('squares').innerHTML = showSpheres ? "Hide" : "Show";
 }
 
 // continuous rotation on Z axis
