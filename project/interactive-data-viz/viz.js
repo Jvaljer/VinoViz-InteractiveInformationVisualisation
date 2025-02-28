@@ -373,7 +373,7 @@ function drawSphere(deathRate, drinkingRate, maxDeathRate, minRadius, maxRadius,
   let normalizedRadius = deathRate / maxDeathRate;
   let radius = minRadius + normalizedRadius * (maxRadius - minRadius);
 
-  if (drinkingRate == null)
+  if (drinkingRate == null || !showSquares)
       translate(0, 0, (normalizedHeight * maxHeight + 1) / 2 + maxRadius);
   else
       translate(0, 0, (normalizedHeight + 1) / 2 + maxRadius);
